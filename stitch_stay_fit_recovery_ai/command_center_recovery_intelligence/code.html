@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stay FIT | Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Geist:wght@300;400;500&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 219, 231, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.3);
+        }
+        .recovery-ring {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283; /* Start empty for animation */
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        @keyframes gauge-load {
+            from {
+                transform: rotate(-180deg) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: rotate(-90deg) scale(1);
+                opacity: 1;
+            }
+        }
+        .gauge-container {
+            animation: gauge-load 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(171, 214, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(171, 214, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(171, 214, 0, 0); }
+        }
+        .pulse-status {
+            animation: pulse-green 2s infinite;
+        }
+
+        /* Typing Effect */
+        .typing-text {
+            overflow: hidden;
+            border-right: 2px solid #00dbe7;
+            white-space: normal;
+            margin: 0 auto;
+            animation: 
+                typing 3s steps(40, end),
+                blink-caret .75s step-end infinite;
+            max-width: fit-content;
+        }
+
+        @keyframes typing {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 200px; opacity: 1; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00dbe7; }
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1d1e32, #111225);
+            min-height: 100vh;
+            color: #e1e0fb;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#161e00",
+                    "surface-bright": "#37374d",
+                    "surface": "#111225",
+                    "on-primary-container": "#006a71",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed-variant": "#3c4d00",
+                    "primary": "#e1fdff",
+                    "primary-fixed": "#74f5ff",
+                    "secondary-fixed": "#f8d8ff",
+                    "secondary-container": "#b600f8",
+                    "surface-dim": "#111225",
+                    "on-tertiary-container": "#516800",
+                    "on-background": "#e1e0fb",
+                    "on-primary-fixed-variant": "#004f54",
+                    "primary-fixed-dim": "#00dbe7",
+                    "surface-container-highest": "#323348",
+                    "on-surface": "#e1e0fb",
+                    "on-primary": "#00363a",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container": "#1d1e32",
+                    "surface-container-high": "#27283d",
+                    "surface-container-lowest": "#0b0c1f",
+                    "surface-container-low": "#191a2d",
+                    "inverse-on-surface": "#2e2f43",
+                    "tertiary-fixed-dim": "#abd600",
+                    "primary-container": "#00f2ff",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe7",
+                    "surface-variant": "#323348",
+                    "outline-variant": "#3a494b",
+                    "tertiary-container": "#bdec00",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#c3f400",
+                    "on-tertiary": "#283500",
+                    "secondary": "#ebb2ff",
+                    "on-secondary-fixed": "#320047",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary": "#520072",
+                    "outline": "#849495",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "inverse-surface": "#e1e0fb",
+                    "on-secondary-container": "#fff6fc",
+                    "inverse-primary": "#00696f",
+                    "tertiary": "#efffbb",
+                    "on-primary-fixed": "#002022",
+                    "background": "#111225"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "40px",
+                    "gutter": "20px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "2xl": "64px",
+                    "md": "16px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Geist"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-md": ["Sora"],
+                    "display-lg": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "body-md": ["Geist"],
+                    "label-md": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Sora"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md selection:bg-primary-fixed-dim selection:text-on-primary">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary-fixed-dim">Stay FIT</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary-fixed-dim hover:opacity-80 transition-opacity">notifications</button>
+<div class="w-10 h-10 rounded-full border border-primary/20 bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up professional portrait of a fitness-focused young woman with glowing skin and a look of determination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSkbqrPSPMkvS7RAOCQ--hNYx9K6eug6GYhurtBcUvoZ9GBArOsjwojJKEYbEvoV5Yjy9FA7OhcA2CIJFo_7UeJ1KdN8IVURF_GoHAAB20Zxv_R51MV5Z-5UtxGy6HS-ZDfJtM0EZGaT6tzg_wqlxNBM1tv-f-pIAF1f4mIQWUd6Rt-P1m1v_2DVqvyaUnliOet4sKnxigrUIio1HvLm7--Yxxil9XFidhuof3aHAnRZ37Ob4ofdJD44mbVFkixe6ltJs1bypaLO8i"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-mobile max-w-4xl mx-auto space-y-lg">
+<!-- Readiness Index Central Gauge -->
+<section class="flex flex-col items-center justify-center py-lg relative overflow-hidden">
+<div class="gauge-container relative w-64 h-64 flex items-center justify-center">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-white/5 stroke-current" cx="50" cy="50" fill="transparent" r="45" stroke-width="6"></circle>
+<circle class="recovery-ring text-primary-fixed-dim stroke-current transition-all duration-[1500ms] ease-out" cx="50" cy="50" fill="transparent" r="45" stroke-linecap="round" stroke-width="6" style="filter: drop-shadow(0 0 8px rgba(0, 219, 231, 0.6))"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Readiness Index</span>
+<span class="font-display-lg text-display-lg text-primary-fixed-dim">85%</span>
+<span class="font-label-sm text-label-sm text-tertiary-fixed-dim mt-unit flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> Optimal
+                </span>
+</div>
+</div>
+</section>
+<!-- Status Grid (Bento Style) -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-sm md:gap-md">
+<div class="glass-card p-md rounded-xl flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">speed</span>
+<div class="w-2 h-2 rounded-full bg-tertiary-fixed-dim pulse-status"></div>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Burnout Risk</p>
+<p class="font-headline-md text-headline-md text-tertiary-fixed-dim">Low</p>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex flex-col justify-between h-32">
+<span class="material-symbols-outlined text-primary-fixed-dim">bolt</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Energy Level</p>
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md">72%</span>
+<div class="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex flex-col justify-between h-32">
+<span class="material-symbols-outlined text-error">psychology</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Stress Indicator</p>
+<div class="flex gap-xs mt-xs">
+<div class="h-4 flex-1 bg-tertiary-fixed-dim/20 rounded-sm"></div>
+<div class="h-4 flex-1 bg-tertiary-fixed-dim/20 rounded-sm"></div>
+<div class="h-4 flex-1 bg-primary-fixed-dim/40 rounded-sm"></div>
+<div class="h-4 flex-1 bg-primary-fixed-dim/60 rounded-sm border-t border-primary-fixed-dim shadow-[0_-2px_4px_rgba(0,219,231,0.2)]"></div>
+<div class="h-4 flex-1 bg-white/5 rounded-sm"></div>
+</div>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex flex-col justify-between h-32">
+<span class="material-symbols-outlined text-secondary">bedtime</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sleep Quality</p>
+<p class="font-headline-md text-headline-md text-secondary">92%</p>
+</div>
+</div>
+</section>
+<!-- AI Insights Panel -->
+<section class="glass-card p-lg rounded-xl border-l-4 border-l-primary-fixed-dim relative overflow-hidden">
+<div class="absolute top-0 right-0 p-lg opacity-10">
+<span class="material-symbols-outlined text-[64px]">smart_toy</span>
+</div>
+<div class="flex items-start gap-md relative z-10">
+<div class="p-sm rounded-lg bg-primary/10 text-primary-fixed-dim">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="space-y-xs">
+<h3 class="font-headline-md text-headline-md text-primary-fixed-dim">Command Brief</h3>
+<div class="typing-text">
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        You’re pushing hard lately. Recovery is catching up. Consider a light recovery day today to optimize cellular repair and central nervous system stability.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recommendation Cards -->
+<section class="space-y-md">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest pl-unit">Neural Sync</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Physical Recommendation -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md group">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-white/5">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Athlete performing active stretching." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDjeZUcNlYxrTaf-OavbDPscA0Tmq-FXfvVLE_33j8OmDvL6JJlU4S-5MbpBcZaGeYjTPv7SFLXrdUdDFIRQ2sy8wKIzy_x5rZqRHV_n9itfKahh9aie9xbC2a6v_yUJBuhvsW-VSqWpDEWvQym-t_nsWGCVVmh0L32WTs5PtmNFy9aELwHh0367zCpWpUKMhtylr4icZEjVgBMCoAqgb6ti5MNG1beQHtOjQxrrHaB1EPSr_k1N9PtOPg_y3AQcYLgpAbOhkuqSq"/>
+</div>
+<div class="flex-1">
+<span class="font-label-sm text-label-sm text-primary-fixed-dim uppercase">Physical</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">15m Active Stretching</h4>
+<div class="flex items-center gap-sm mt-xs">
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Low Intensity
+                        </span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed-dim transition-colors">play_circle</button>
+</div>
+<!-- Mental Recommendation -->
+<div class="glass-card p-md rounded-xl flex items-center gap-md group">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-white/5">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Zen garden visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg-pKUqQUCffUZxeJ1e7k4PD9_yJZiA6XFKPnJirmxr6a5QOlbR26vD8_iAXYe0fQVtezNVmjBg0O_8inXidZCv0O3qaGHMSkqPyVfnUb5q-5zUlv0Z__AZ9WrkTDvu52IkSeLajyt4Al1QBsnmiU9J4DhtVN68rPz9Aj5X-TReaCrnXPBN5Yc30E08kBPrh6DxBmEd0jS-8TKK0_vC-B8irOjS3y4h5Pl98r5AOtjstUcqdpu5d-DZGEpHYIkE5erM7LtEWv8OYZB"/>
+</div>
+<div class="flex-1">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Mental</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">5m Guided Breathwork</h4>
+<div class="flex items-center gap-sm mt-xs">
+<span class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">air</span> Parasympathetic Focus
+                        </span>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">play_circle</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/40 backdrop-blur-2xl rounded-t-xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center gap-1">
+<div class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 scale-100 transition-transform active:scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+</div>
+<div class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<div class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+</div>
+</nav>
+<script>
+    // Micro-interactions and initialization
+    window.addEventListener('DOMContentLoaded', () => {
+        // Readiness Index Ring Animation
+        const circle = document.querySelector('.recovery-ring');
+        if (circle) {
+            setTimeout(() => {
+                circle.style.strokeDashoffset = 'calc(283 - (283 * 85) / 100)';
+            }, 300);
+        }
+
+        // Glass card mouse effect
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    });
+</script>
+</body></html>

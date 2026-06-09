@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Geist:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #111225;
+            color: #e1e0fb;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.3);
+        }
+        .neon-border-primary {
+            border: 1px solid rgba(0, 219, 231, 0.5);
+        }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: burst 0.8s ease-out forwards;
+        }
+        @keyframes burst {
+            0% { transform: scale(0) translate(0, 0); opacity: 1; }
+            100% { transform: scale(1) translate(var(--tw-translate-x), var(--tw-translate-y)); opacity: 0; }
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#161e00",
+                        "surface-bright": "#37374d",
+                        "surface": "#111225",
+                        "on-primary-container": "#006a71",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#3c4d00",
+                        "primary": "#e1fdff",
+                        "primary-fixed": "#74f5ff",
+                        "secondary-fixed": "#f8d8ff",
+                        "secondary-container": "#b600f8",
+                        "surface-dim": "#111225",
+                        "on-tertiary-container": "#516800",
+                        "on-background": "#e1e0fb",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe7",
+                        "surface-container-highest": "#323348",
+                        "on-surface": "#e1e0fb",
+                        "on-primary": "#00363a",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container": "#1d1e32",
+                        "surface-container-high": "#27283d",
+                        "surface-container-lowest": "#0b0c1f",
+                        "surface-container-low": "#191a2d",
+                        "inverse-on-surface": "#2e2f43",
+                        "tertiary-fixed-dim": "#abd600",
+                        "primary-container": "#00f2ff",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dbe7",
+                        "surface-variant": "#323348",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#bdec00",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#c3f400",
+                        "on-tertiary": "#283500",
+                        "secondary": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520072",
+                        "outline": "#849495",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "inverse-surface": "#e1e0fb",
+                        "on-secondary-container": "#fff6fc",
+                        "inverse-primary": "#00696f",
+                        "tertiary": "#efffbb",
+                        "on-primary-fixed": "#002022",
+                        "background": "#111225"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "gutter": "20px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "2xl": "64px",
+                        "md": "16px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "body-md": ["Geist"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Sora"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background selection:bg-primary-fixed-dim selection:text-on-primary-fixed min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a fitness-focused individual with a high-tech biometric headset, set against a dark cyan and deep navy background. The lighting is sharp and cinematic, highlighting the cool blue tones and futuristic wellness aesthetic. The person looks determined and optimized, reflecting the Stay FIT brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZVr9-YJt6zay6JFYa7rbEVaGDD7iVpOz_q5LyyNxbSJM-CKOax1hrmXdW8Nt01qAgLGDVj4gZm7NALBp9yQ3ZYbgAI7dbhVzu9fAjNCR5PP2XBX-NGsizrh37l8vHNZLYnGrPDDnedF7H4xrCmh7uaxINdJAYWwrEm-MDBkK8P3FC-kfyL8sIc4DOokdgri1NuS_cbcR_61obSJwtczyRtl9513-lKnt0ltSXV6jC4qneZtEsO5EcyUspglKUkwEOhFKob931XANh"/>
+</div>
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">Stay FIT</span>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity">notifications</button>
+</header>
+<main class="pt-24 px-margin-mobile max-w-2xl mx-auto space-y-lg">
+<!-- Level & XP Hero -->
+<section class="glass-panel p-6 rounded-xl relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="font-label-md text-label-md text-primary-fixed-dim uppercase tracking-widest">Global Rank: #42</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mt-1">Level 12 - Advanced Optimizer</h1>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2,450 / 3,000 XP</span>
+</div>
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-primary-fixed-dim w-[81%] shadow-[0_0_12px_rgba(0,219,231,0.6)] animate-pulse"></div>
+</div>
+</div>
+<div class="absolute -right-4 -top-4 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+</section>
+<!-- Streak Counter -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="glass-panel p-6 rounded-xl flex items-center gap-4 group">
+<div class="w-16 h-16 rounded-full bg-secondary-container/20 flex items-center justify-center border border-secondary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">14 Day Streak</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Recovery Streak active</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center gap-4 bg-primary/5 neon-border-primary">
+<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Daily Goal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">92% Complete</p>
+</div>
+</div>
+</section>
+<!-- New Badge Notification (Floating) -->
+<div class="glass-panel p-4 rounded-xl border-primary/40 bg-surface-container-high/60 flex items-center gap-4 relative animate-bounce shadow-2xl z-20" id="badge-notification">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-primary uppercase">Special Achievement</p>
+<h4 class="font-body-lg text-body-lg text-on-surface font-bold">New Badge Unlocked!</h4>
+</div>
+<button class="ml-auto text-on-surface-variant hover:text-on-surface" onclick="this.parentElement.remove()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<!-- Burst effect container -->
+<div class="absolute inset-0 pointer-events-none" id="particle-container"></div>
+</div>
+<!-- Badges Gallery -->
+<section>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+                Badges Gallery
+            </h2>
+<div class="grid grid-cols-2 gap-4">
+<!-- Hydration Master -->
+<div class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="relative mb-4">
+<div class="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-20 h-20 rounded-full glass-panel border-primary/20 flex items-center justify-center floating">
+<span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Hydration Master</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Met daily water goals</p>
+</div>
+<!-- 7-Day Recovery Streak -->
+<div class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="relative mb-4">
+<div class="absolute inset-0 bg-secondary/20 blur-xl rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-20 h-20 rounded-full glass-panel border-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-5xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">7-Day Recovery</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Perfect sleep cycle</p>
+</div>
+<!-- Mental Balance Champion -->
+<div class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="relative mb-4">
+<div class="absolute inset-0 bg-tertiary-fixed-dim/20 blur-xl rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-20 h-20 rounded-full glass-panel border-tertiary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-5xl" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Mental Balance</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Meditated 100+ mins</p>
+</div>
+<!-- Consistency King -->
+<div class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="relative mb-4">
+<div class="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="w-20 h-20 rounded-full glass-panel border-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">crown</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px]">Consistency King</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">30 days without miss</p>
+</div>
+</div>
+</section>
+<!-- Stats Grid (Bento style) -->
+<section class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-6 rounded-2xl col-span-2">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Weekly Progress</h3>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<div class="mt-4 flex items-end gap-2 h-24">
+<div class="w-full bg-primary/10 rounded-t-lg h-[40%]"></div>
+<div class="w-full bg-primary/20 rounded-t-lg h-[60%]"></div>
+<div class="w-full bg-primary/30 rounded-t-lg h-[80%]"></div>
+<div class="w-full bg-primary-fixed-dim rounded-t-lg h-[95%] shadow-[0_0_10px_rgba(0,219,231,0.4)]"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[30%]"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[50%]"></div>
+<div class="w-full bg-primary/10 rounded-t-lg h-[20%]"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/40 backdrop-blur-2xl border-t border-white/5 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">psychology</span>
+</a>
+<a class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+</a>
+</nav>
+<script>
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            if (!container) return;
+            
+            const colors = ['#00dbe7', '#74f5ff', '#ffffff', '#ebb2ff'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 6 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tw-translate-x', `${tx}px`);
+                particle.style.setProperty('--tw-translate-y', `${ty}px`);
+                
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+
+        // Trigger burst on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(createParticles, 500);
+            // Re-trigger every 10 seconds for visual flair
+            setInterval(createParticles, 10000);
+        });
+
+        // Add interaction to badges
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.95)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

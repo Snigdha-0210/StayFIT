@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stay FIT - Tomorrow Simulation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#3a494b",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-dim": "#111225",
+                        "surface": "#111225",
+                        "on-tertiary-fixed": "#161e00",
+                        "surface-container-high": "#27283d",
+                        "on-secondary": "#520072",
+                        "on-error": "#690005",
+                        "surface-bright": "#37374d",
+                        "primary-fixed-dim": "#00dbe7",
+                        "tertiary-fixed": "#c3f400",
+                        "surface-container-lowest": "#0b0c1f",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "primary-fixed": "#74f5ff",
+                        "outline": "#849495",
+                        "on-background": "#e1e0fb",
+                        "on-primary-fixed": "#002022",
+                        "background": "#111225",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-variant": "#323348",
+                        "surface-container-low": "#191a2d",
+                        "secondary": "#ebb2ff",
+                        "primary": "#e1fdff",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed": "#320047",
+                        "tertiary-container": "#bdec00",
+                        "surface-tint": "#00dbe7",
+                        "on-surface": "#e1e0fb",
+                        "primary-container": "#00f2ff",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#283500",
+                        "surface-container-highest": "#323348",
+                        "inverse-surface": "#e1e0fb",
+                        "inverse-primary": "#00696f",
+                        "on-tertiary-fixed-variant": "#3c4d00",
+                        "tertiary": "#efffbb",
+                        "surface-container": "#1d1e32",
+                        "tertiary-fixed-dim": "#abd600",
+                        "on-tertiary-container": "#516800",
+                        "on-primary-container": "#006a71",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#2e2f43",
+                        "on-primary": "#00363a",
+                        "on-surface-variant": "#b9cacb",
+                        "secondary-container": "#b600f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "48px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "xl": "40px",
+                        "2xl": "64px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Geist"],
+                        "headline-lg": ["Sora"],
+                        "headline-lg-mobile": ["Sora"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Geist"],
+                        "headline-md": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.2);
+        }
+        .neon-glow-error {
+            box-shadow: 0 0 15px rgba(255, 180, 171, 0.2);
+        }
+        .neon-glow-success {
+            box-shadow: 0 0 15px rgba(195, 244, 0, 0.2);
+        }
+        .chart-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s linear forwards;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+        .pulse-soft {
+            animation: pulse-soft 3s infinite ease-in-out;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/30 dark:bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center overflow-hidden bg-surface-container-high">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE-iF_uY6iPsB8F0FUv-123bnnfryvOLnW4b-9nqF5dureafFEzgBQgk-RmQlBVbivWTf-Eqc67foAeOYqRMsY4e2lNDyFQyIAmvnB0gV6n8Ns0BqeO9g29SYDq4VKAM4OaeNC1smnKlpV4o_WY25vnPE0oQ1pJCA6nJr4rRERrmOF0DNzrDgBjzd3aIOCXqCsYUF6QvrGqqjTDTSLLigSqXfgoaoA3AdFqe-QZwwZcvhelqm7X4ghY7VpmVadhu255daP5n4pPvzi"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">Stay FIT</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity">notifications</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="mt-20 mb-28 px-margin-mobile max-w-5xl mx-auto space-y-8">
+<!-- Header Section -->
+<section class="space-y-2">
+<div class="flex items-center gap-2 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-sm">psychology</span>
+<span class="font-label-md text-label-md tracking-widest uppercase">Predictive Analysis</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary">Tomorrow Simulation</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-lg">
+                You’re pushing hard lately. Recovery is catching up. Let's look at your physiological divergence.
+            </p>
+</section>
+<!-- Simulation Comparison Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Path 1: Current Trajectory -->
+<div class="glass-card rounded-2xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">trending_down</span>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">Current Trajectory</h3>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-display-lg text-error">62%</span>
+<span class="font-label-md text-label-md mb-3 text-on-surface-variant">Readiness</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">Burnout Risk</span>
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full font-label-sm text-label-sm">Medium</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[62%]"></div>
+</div>
+</div>
+<!-- Small Chart Mockup -->
+<div class="mt-6 h-32 w-full bg-surface-container-low/50 rounded-lg p-2 overflow-hidden flex items-end gap-1">
+<div class="flex-1 bg-error/20 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-error/30 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-error/40 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-error/50 h-[50%] rounded-t-sm pulse-soft"></div>
+<div class="flex-1 bg-error/60 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-error/70 h-[38%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Path 2: Optimized Path -->
+<div class="glass-card rounded-2xl p-6 relative overflow-hidden group neon-glow-primary border-primary/20 bg-primary/5">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary">auto_awesome</span>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md text-primary">Optimized Path</h3>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-display-lg text-primary-fixed-dim">84%</span>
+<span class="font-label-md text-label-md mb-3 text-primary-fixed-dim/70">Potential</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">Protocol Adherence</span>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full font-label-sm text-label-sm">Peak Recovery</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[84%] neon-glow-primary"></div>
+</div>
+</div>
+<!-- Optimized Chart Mockup -->
+<div class="mt-6 h-32 w-full bg-surface-container-low/50 rounded-lg p-2 overflow-hidden flex items-end gap-1">
+<div class="flex-1 bg-primary/20 h-[50%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/50 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/70 h-[80%] rounded-t-sm pulse-soft"></div>
+<div class="flex-1 bg-primary-container h-[84%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Protocol Recommendation Section -->
+<section class="glass-card rounded-3xl p-8 border-l-4 border-l-tertiary-fixed">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="space-y-4">
+<h4 class="font-headline-md text-headline-md text-tertiary">Recommended Protocol</h4>
+<p class="text-on-surface font-body-md">Initiate 20m restorative breathwork and prioritize 8.5h sleep tonight. Skip high-intensity volume tomorrow morning.</p>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-xl border border-white/5">
+<span class="material-symbols-outlined text-tertiary-fixed">bedtime</span>
+<span class="font-label-sm text-label-sm">+1.5h Sleep</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-xl border border-white/5">
+<span class="material-symbols-outlined text-primary-fixed-dim">water_drop</span>
+<span class="font-label-sm text-label-sm">High Hydration</span>
+</div>
+</div>
+</div>
+<button class="bg-primary px-8 py-4 rounded-2xl text-on-primary font-headline-md font-bold hover:scale-105 active:scale-95 transition-all shadow-lg neon-glow-primary whitespace-nowrap">
+                    Apply Protocol
+                </button>
+</div>
+</section>
+<!-- Emotional Forecast -->
+<section class="space-y-6">
+<h4 class="font-headline-md text-headline-md flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">face_retouching_natural</span>
+                Emotional Forecast
+            </h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="glass-card rounded-2xl p-5 border-b-2 border-b-error/30">
+<h5 class="font-label-md text-label-md text-on-surface-variant mb-4 uppercase tracking-widest">How You Might Feel</h5>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-body-md">Slight Fatigue</span>
+<span class="material-symbols-outlined text-error">trending_up</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-body-md">Low Motivation Risk</span>
+<span class="material-symbols-outlined text-tertiary-fixed">warning</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl">
+<span class="font-body-md">Mild Recovery Deficit</span>
+<span class="material-symbols-outlined text-secondary">timer_10</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 glass-card rounded-2xl p-5 overflow-hidden relative min-h-[160px]">
+<div class="relative z-10 space-y-4">
+<h5 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Simulation Context</h5>
+<p class="font-body-lg text-body-lg leading-relaxed">
+                            Based on your sympathetic nervous system activity and recent high-strain HR patterns, your cognitive focus is likely to dip by 14:00 tomorrow unless cortisol clearance is prioritized tonight.
+                        </p>
+</div>
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/40 dark:bg-surface-container-low/40 backdrop-blur-2xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] rounded-t-xl">
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</a>
+<a class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</a>
+</nav>
+<script>
+        // Simple interactive hover effect for glass cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

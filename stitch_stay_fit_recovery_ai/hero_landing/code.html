@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stay FIT - Performance OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;family=Sora:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .neon-glow-primary {
+            box-shadow: 0 0 20px rgba(0, 219, 231, 0.4);
+        }
+
+        .light-leak-border {
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%) border-box;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 15px rgba(0, 219, 231, 0.5);
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-fixed": "#161e00",
+                "surface-bright": "#37374d",
+                "surface": "#111225",
+                "on-primary-container": "#006a71",
+                "error": "#ffb4ab",
+                "on-tertiary-fixed-variant": "#3c4d00",
+                "primary": "#e1fdff",
+                "primary-fixed": "#74f5ff",
+                "secondary-fixed": "#f8d8ff",
+                "secondary-container": "#b600f8",
+                "surface-dim": "#111225",
+                "on-tertiary-container": "#516800",
+                "on-background": "#e1e0fb",
+                "on-primary-fixed-variant": "#004f54",
+                "primary-fixed-dim": "#00dbe7",
+                "surface-container-highest": "#323348",
+                "on-surface": "#e1e0fb",
+                "on-primary": "#00363a",
+                "on-secondary-fixed-variant": "#74009f",
+                "surface-container": "#1d1e32",
+                "surface-container-high": "#27283d",
+                "surface-container-lowest": "#0b0c1f",
+                "surface-container-low": "#191a2d",
+                "inverse-on-surface": "#2e2f43",
+                "tertiary-fixed-dim": "#abd600",
+                "primary-container": "#00f2ff",
+                "on-error": "#690005",
+                "error-container": "#93000a",
+                "surface-tint": "#00dbe7",
+                "surface-variant": "#323348",
+                "outline-variant": "#3a494b",
+                "tertiary-container": "#bdec00",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed": "#c3f400",
+                "on-tertiary": "#283500",
+                "secondary": "#ebb2ff",
+                "on-secondary-fixed": "#320047",
+                "on-surface-variant": "#b9cacb",
+                "on-secondary": "#520072",
+                "outline": "#849495",
+                "secondary-fixed-dim": "#ebb2ff",
+                "inverse-surface": "#e1e0fb",
+                "on-secondary-container": "#fff6fc",
+                "inverse-primary": "#00696f",
+                "tertiary": "#efffbb",
+                "on-primary-fixed": "#002022",
+                "background": "#111225"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "xl": "40px",
+                "gutter": "20px",
+                "unit": "4px",
+                "margin-mobile": "16px",
+                "xs": "4px",
+                "lg": "24px",
+                "sm": "8px",
+                "2xl": "64px",
+                "md": "16px",
+                "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                "body-lg": ["Geist"],
+                "label-sm": ["JetBrains Mono"],
+                "headline-md": ["Sora"],
+                "display-lg": ["Sora"],
+                "headline-lg": ["Sora"],
+                "body-md": ["Geist"],
+                "label-md": ["JetBrains Mono"],
+                "headline-lg-mobile": ["Sora"]
+            },
+            "fontSize": {
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface overflow-hidden font-body-md selection:bg-primary-fixed-dim/30">
+<!-- Hero Shader Background -->
+<div class="fixed inset-0 z-0">
+<!-- STITCH_SHADER_START:ANIMATION_1 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_1" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_1');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+// Simplex 2D noise
+vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+float snoise(vec2 v){
+  const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+           -0.577350269189626, 0.024390243902439);
+  vec2 i  = floor(v + dot(v, C.yy) );
+  vec2 x0 = v -   i + dot(i, C.xx);
+  vec2 i1;
+  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+  vec4 x12 = x0.xyxy + C.xxzz;
+  x12.xy -= i1;
+  i = mod(i, 289.0);
+  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+  + i.x + vec3(0.0, i1.x, 1.0 ));
+  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy),
+    dot(x12.zw,x12.zw)), 0.0);
+  m = m*m ;
+  m = m*m ;
+  vec3 x = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x) - 0.5;
+  vec3 ox = floor(x + 0.5);
+  vec3 a0 = x - ox;
+  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 g;
+  g.x  = a0.x  * x0.x  + h.x  * x0.y;
+  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+  return 130.0 * dot(m, g);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    float n = snoise(uv * 3.0 + u_time * 0.2);
+    float n2 = snoise(uv * 5.0 - u_time * 0.1);
+    
+    vec3 color1 = vec3(0.0, 0.95, 1.0); // Neon Blue
+    vec3 color2 = vec3(0.74, 0.07, 1.0); // Purple
+    vec3 color3 = vec3(0.04, 0.04, 0.12); // Deep Navy
+    
+    vec3 finalColor = mix(color3, color1, n * 0.5 + 0.5);
+    finalColor = mix(finalColor, color2, n2 * 0.3 + 0.3);
+    
+    // Add a pulsing glow
+    float glow = sin(u_time) * 0.1 + 0.9;
+    finalColor *= (0.8 + 0.2 * n);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_1 -->
+<!-- Overlay Gradient for Readability -->
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/20 via-transparent to-surface-container-lowest/80"></div>
+</div>
+<!-- Navigation (Shell) -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary bg-clip-text text-glow">Stay FIT</span>
+</div>
+<div class="hidden md:flex items-center gap-sm">
+<a class="px-4 py-2 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Performance</a>
+<a class="px-4 py-2 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Recovery</a>
+<a class="px-4 py-2 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Science</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary transition-colors" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-fashion portrait of a sleek, athletic female athlete with glowing biometric sensors subtly integrated into her skin. The lighting is cold and futuristic, dominated by deep blues and electric cyan highlights. The aesthetic is clean and high-end, representing a premium fitness operating system user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApsgoKWYWcexQ-OOpq-USf8kcnWADf_neESrL7q_kiC3RBhoD5A2d2vNyMUuxwGF9YFuvMsTwexnIZ5aTGP9qniCB8Pxs4qSopjbjHvSa978FmXGzbFsowCv19Ee5p_pex-2zo3fpiuORnNaEQND5qwjL1nazqPEMjSW6s8INpAIqGHsdRndegMdilfLHmNTOJkVvUwsfrffcJXabYRL3uAJyaHdIYQrsh_YeaFAB_k-Flzz-xvB2hpEl1UsxP-bRKMp0y5JS1kI3R"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="relative z-10 w-full h-screen flex flex-col justify-center items-center px-margin-mobile text-center">
+<!-- Hero Header Section -->
+<div class="max-w-4xl mx-auto space-y-lg">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border-white/10 mb-md animate-pulse-slow">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim shadow-[0_0_8px_#00dbe7]"></span>
+<span class="font-label-md text-label-md text-primary tracking-widest">SYSTEM STATUS: OPTIMIZED</span>
+</div>
+<h1 class="font-display-lg text-[42px] md:text-display-lg leading-[1.1] text-primary tracking-tighter text-glow drop-shadow-2xl">
+                Stay FIT
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant/90 max-w-xl mx-auto">
+                Train smarter. Recover better. Perform longer.
+            </p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-md pt-xl">
+<!-- Primary CTA -->
+<button class="group relative px-10 py-4 bg-primary-fixed-dim text-on-primary font-headline-md text-headline-md rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 neon-glow-primary overflow-hidden">
+<span class="relative z-10">Get Started</span>
+<div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+</button>
+<!-- Secondary CTA -->
+<button class="px-10 py-4 border border-primary/20 hover:border-primary/50 text-primary font-headline-md text-headline-md rounded-xl backdrop-blur-md transition-all duration-300 hover:bg-white/5 active:scale-95">
+                    Sign In
+                </button>
+</div>
+</div>
+<!-- Metric Preview (Bento-lite) -->
+<div class="absolute bottom-32 left-0 w-full hidden md:grid grid-cols-4 gap-gutter px-margin-desktop max-w-7xl mx-auto">
+<div class="glass-card p-lg rounded-xl light-leak-border flex flex-col gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Heart Rate</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary">68</span>
+<span class="font-label-md text-label-md text-on-surface-variant">BPM</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl light-leak-border flex flex-col gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="bolt">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Readiness</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary">94</span>
+<span class="font-label-md text-label-md text-on-surface-variant">%</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl light-leak-border flex flex-col gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="bedtime">bedtime</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Sleep Quality</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary">Optimal</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl light-leak-border flex flex-col gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="query_stats">query_stats</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Performance</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-primary">+12.4</span>
+<span class="font-label-md text-label-md text-on-surface-variant">%</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Mobile Only) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-low/40 backdrop-blur-2xl border-t border-white/5 flex justify-around items-center px-4 py-3 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.5)] rounded-t-xl">
+<button class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // Subtle parallax effect for metrics
+            const metricCards = document.querySelectorAll('.glass-card');
+            metricCards.forEach((card, index) => {
+                const depth = (index + 1) * 5;
+                const moveX = (x - 0.5) * depth;
+                const moveY = (y - 0.5) * depth;
+                card.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+
+        // Button active state interaction
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+    </script>
+</body></html>

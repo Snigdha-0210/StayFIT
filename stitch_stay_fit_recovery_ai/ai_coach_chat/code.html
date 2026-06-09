@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stay FIT | AI Recovery Coach</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#161e00",
+                      "surface-bright": "#37374d",
+                      "surface": "#111225",
+                      "on-primary-container": "#006a71",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#3c4d00",
+                      "primary": "#e1fdff",
+                      "primary-fixed": "#74f5ff",
+                      "secondary-fixed": "#f8d8ff",
+                      "secondary-container": "#b600f8",
+                      "surface-dim": "#111225",
+                      "on-tertiary-container": "#516800",
+                      "on-background": "#e1e0fb",
+                      "on-primary-fixed-variant": "#004f54",
+                      "primary-fixed-dim": "#00dbe7",
+                      "surface-container-highest": "#323348",
+                      "on-surface": "#e1e0fb",
+                      "on-primary": "#00363a",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-container": "#1d1e32",
+                      "surface-container-high": "#27283d",
+                      "surface-container-lowest": "#0b0c1f",
+                      "surface-container-low": "#191a2d",
+                      "inverse-on-surface": "#2e2f43",
+                      "tertiary-fixed-dim": "#abd600",
+                      "primary-container": "#00f2ff",
+                      "on-error": "#690005",
+                      "error-container": "#93000a",
+                      "surface-tint": "#00dbe7",
+                      "surface-variant": "#323348",
+                      "outline-variant": "#3a494b",
+                      "tertiary-container": "#bdec00",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed": "#c3f400",
+                      "on-tertiary": "#283500",
+                      "secondary": "#ebb2ff",
+                      "on-secondary-fixed": "#320047",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary": "#520072",
+                      "outline": "#849495",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "inverse-surface": "#e1e0fb",
+                      "on-secondary-container": "#fff6fc",
+                      "inverse-primary": "#00696f",
+                      "tertiary": "#efffbb",
+                      "on-primary-fixed": "#002022",
+                      "background": "#111225"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "40px",
+                      "gutter": "20px",
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "2xl": "64px",
+                      "md": "16px",
+                      "margin-desktop": "48px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Geist"],
+                      "label-sm": ["JetBrains Mono"],
+                      "headline-md": ["Sora"],
+                      "display-lg": ["Sora"],
+                      "headline-lg": ["Sora"],
+                      "body-md": ["Geist"],
+                      "label-md": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Sora"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #111225;
+            color: #e1e0fb;
+            font-family: 'Geist', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #00dbe7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-bubble {
+            background: rgba(0, 219, 237, 0.1);
+            border-right: 3px solid #00dbe7;
+            border-top: 1px solid rgba(0, 219, 237, 0.2);
+        }
+
+        .glow-pulse {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 219, 231, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(0, 219, 231, 0.8); }
+        }
+
+        .voice-wave span {
+            display: inline-block;
+            width: 3px;
+            height: 12px;
+            background: #00dbe7;
+            margin: 0 1px;
+            border-radius: 2px;
+            animation: wave 1s infinite ease-in-out;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 8px; }
+            50% { height: 20px; }
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .suggestion-chip {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .suggestion-chip:active {
+            transform: scale(0.95);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex flex-col items-center">
+<!-- Header Section (TopAppBar Shared Component Mapping) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center overflow-hidden glow-pulse bg-surface-container-low">
+<img alt="AI Avatar" class="w-full h-full object-cover" data-alt="A high-tech digital humanoid face constructed from glowing blue fiber-optic strands and geometric light patterns. The background is a dark, sophisticated void with subtle hints of data streams. The lighting is dominated by electric blue neon highlights, creating a supportive, intelligent, and premium aesthetic consistent with a futuristic wellness operating system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0O5C2h7-NelI4MbsQKWrBFMp_Xv2YhyIbrbZvnA4MQpWKBAGJOHSBpe9AxjWwUBrnwqaq0KzJ63Vu4EKL6H_AGVoQwzSihiwGHEXs7oZp8T3WZknx7v_pb57qk0kuZj-LC6a-gHVS_knmNLCne8IK2W6TXvRw6uyblrFwnIHMs10OI8Tn0eVvAWlG3neqvT7Bx2ZPfn3H2Hz7YQWsDNJxSUI6weGdPeh3LlN0RhdU2kjEMhhFUfS9LKOKCR6liT8M415HrFPb_kkQ"/>
+</div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-tertiary-fixed-dim rounded-full border-2 border-surface"></div>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">AI Recovery Coach</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant/70 -mt-1">Online &amp; Analyzing Biometrics</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-primary transition-opacity hover:opacity-80 active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-2xl px-margin-mobile pt-24 pb-40 flex flex-col">
+<!-- Chat History -->
+<div class="flex-1 space-y-6 overflow-y-auto scrollbar-hide">
+<!-- System Timestamp -->
+<div class="flex justify-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/40 px-3 py-1 glass-panel rounded-full uppercase tracking-widest">Today • 09:42 AM</span>
+</div>
+<!-- User Message -->
+<div class="flex justify-end items-start gap-3 pl-12">
+<div class="user-bubble px-5 py-4 rounded-2xl rounded-tr-none shadow-lg">
+<p class="font-body-md text-body-md text-on-surface">I feel tired today</p>
+</div>
+</div>
+<!-- AI Coach Message -->
+<div class="flex justify-start items-start gap-3 pr-12">
+<div class="ai-bubble px-5 py-4 rounded-2xl rounded-tl-none shadow-xl glass-panel relative">
+<div class="flex items-center gap-2 mb-2 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-bold">Analysis Complete</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Your recent sleep and high workout intensity suggest overtraining. I recommend shifting today to a <span class="text-tertiary-fixed font-bold">"Rest &amp; Restore"</span> day.</p>
+<!-- Recovery Metric Integration -->
+<div class="mt-4 p-3 bg-surface-container-low/50 rounded-xl border border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-error-container rounded-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-error h-2/3 shadow-[0_0_8px_#ffb4ab]"></div>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Recovery Score</p>
+<p class="font-headline-md text-headline-md text-error leading-tight">34%</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant">HRV Trend</p>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight">-12ms</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Typing Indicator (Hidden by default, for demo logic) -->
+<div class="flex justify-start items-center gap-2 opacity-0 transition-opacity" id="typing-indicator">
+<div class="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style="animation-delay: 0.1s"></div>
+<div class="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style="animation-delay: 0.2s"></div>
+<div class="w-2 h-2 rounded-full bg-primary/40 animate-bounce" style="animation-delay: 0.3s"></div>
+</div>
+</div>
+</main>
+<!-- Interactive Input Shell -->
+<div class="fixed bottom-0 left-0 w-full z-50 flex flex-col items-center bg-surface-container-low/40 backdrop-blur-2xl border-t border-white/5 px-4 pt-4 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<!-- Suggestion Chips -->
+<div class="w-full max-w-2xl flex gap-2 overflow-x-auto scrollbar-hide pb-4">
+<button class="suggestion-chip flex-shrink-0 px-4 py-2 rounded-full glass-panel border border-primary/20 flex items-center gap-2 hover:bg-primary/10 group">
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">dark_mode</span>
+<span class="font-label-md text-label-md text-on-surface">Deep Sleep Tips</span>
+</button>
+<button class="suggestion-chip flex-shrink-0 px-4 py-2 rounded-full glass-panel border border-primary/20 flex items-center gap-2 hover:bg-primary/10 group">
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">water_drop</span>
+<span class="font-label-md text-label-md text-on-surface">Log Water</span>
+</button>
+<button class="suggestion-chip flex-shrink-0 px-4 py-2 rounded-full glass-panel border border-primary/20 flex items-center gap-2 hover:bg-primary/10 group">
+<span class="material-symbols-outlined text-[18px] text-primary group-hover:scale-110 transition-transform">self_improvement</span>
+<span class="font-label-md text-label-md text-on-surface">Start Meditation</span>
+</button>
+</div>
+<!-- Input Bar -->
+<div class="w-full max-w-2xl flex items-center gap-3 bg-surface-container-highest/50 rounded-full px-5 py-3 mb-3 border border-white/10">
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md text-body-md" placeholder="Tell the coach how you feel..." type="text"/>
+<!-- Voice Input Button with Animation -->
+<button class="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary-fixed-dim hover:bg-primary/20 transition-all active:scale-90" id="voice-trigger">
+<div class="material-symbols-outlined" id="mic-static">mic</div>
+<div class="hidden voice-wave flex items-end h-5" id="mic-active">
+<span style="animation-delay: 0.1s"></span>
+<span style="animation-delay: 0.3s"></span>
+<span style="animation-delay: 0.2s"></span>
+<span style="animation-delay: 0.4s"></span>
+<span style="animation-delay: 0.1s"></span>
+</div>
+</button>
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_0_15px_rgba(0,219,231,0.4)] hover:shadow-[0_0_25px_rgba(0,219,231,0.6)] transition-shadow">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<!-- Bottom Navigation Shell (BottomNavBar Mapping) -->
+<nav class="w-full max-w-2xl flex justify-around items-center pt-2 pb-2">
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">dashboard</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+<!-- Psychology/Coach Tab is Active -->
+<button class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">military_tech</span>
+</button>
+<button class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">person</span>
+</button>
+</nav>
+</div>
+<!-- Background Atmospheric Effect -->
+<div class="fixed inset-0 -z-10 pointer-events-none">
+<div class="absolute top-1/4 -left-24 w-96 h-96 bg-primary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-1/4 -right-24 w-96 h-96 bg-secondary/5 blur-[120px] rounded-full"></div>
+</div>
+<script>
+        // Micro-interaction logic
+        const voiceTrigger = document.getElementById('voice-trigger');
+        const micStatic = document.getElementById('mic-static');
+        const micActive = document.getElementById('mic-active');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        let isListening = false;
+
+        voiceTrigger.addEventListener('click', () => {
+            isListening = !isListening;
+            if (isListening) {
+                micStatic.classList.add('hidden');
+                micActive.classList.remove('hidden');
+                voiceTrigger.classList.add('bg-primary/30', 'scale-110');
+            } else {
+                micStatic.classList.remove('hidden');
+                micActive.classList.add('hidden');
+                voiceTrigger.classList.remove('bg-primary/30', 'scale-110');
+                
+                // Simulate thinking
+                typingIndicator.classList.remove('opacity-0');
+                setTimeout(() => {
+                    typingIndicator.classList.add('opacity-0');
+                }, 2000);
+            }
+        });
+
+        // Smooth Scroll to bottom
+        const scrollToBottom = () => {
+            const chatContainer = document.querySelector('main > div');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+        window.onload = scrollToBottom;
+    </script>
+</body></html>

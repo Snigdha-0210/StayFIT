@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Stay FIT | Neural Sync</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;family=Sora:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 219, 231, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.4);
+        }
+        .neon-glow-text {
+            text-shadow: 0 0 8px rgba(0, 219, 231, 0.6);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            height: 4px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #00dbe7;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 219, 231, 0.8);
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(0.98); }
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#161e00",
+                        "surface-bright": "#37374d",
+                        "surface": "#111225",
+                        "on-primary-container": "#006a71",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#3c4d00",
+                        "primary": "#e1fdff",
+                        "primary-fixed": "#74f5ff",
+                        "secondary-fixed": "#f8d8ff",
+                        "secondary-container": "#b600f8",
+                        "surface-dim": "#111225",
+                        "on-tertiary-container": "#516800",
+                        "on-background": "#e1e0fb",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe7",
+                        "surface-container-highest": "#323348",
+                        "on-surface": "#e1e0fb",
+                        "on-primary": "#00363a",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container": "#1d1e32",
+                        "surface-container-high": "#27283d",
+                        "surface-container-lowest": "#0b0c1f",
+                        "surface-container-low": "#191a2d",
+                        "inverse-on-surface": "#2e2f43",
+                        "tertiary-fixed-dim": "#abd600",
+                        "primary-container": "#00f2ff",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dbe7",
+                        "surface-variant": "#323348",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#bdec00",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#c3f400",
+                        "on-tertiary": "#283500",
+                        "secondary": "#ebb2ff",
+                        "on-secondary-fixed": "#320047",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520072",
+                        "outline": "#849495",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "inverse-surface": "#e1e0fb",
+                        "on-secondary-container": "#fff6fc",
+                        "inverse-primary": "#00696f",
+                        "tertiary": "#efffbb",
+                        "on-primary-fixed": "#002022",
+                        "background": "#111225"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "gutter": "20px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "2xl": "64px",
+                        "md": "16px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Sora"],
+                        "display-lg": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "body-md": ["Geist"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Sora"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen selection:bg-primary/30">
+<!-- Background Shader -->
+<div class="fixed inset-0 z-0 pointer-events-none opacity-40">
+
+</div>
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/30 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,231,0.1)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">face</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">Stay FIT</h1>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="relative z-10 pt-24 pb-32 px-margin-mobile max-w-2xl mx-auto">
+<section class="mb-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2 font-bold neon-glow-text">Neural Sync</h2>
+<p class="text-on-surface-variant text-body-md opacity-70">Sync your biological data with the OS to optimize your performance window.</p>
+</section>
+<form class="space-y-gutter">
+<!-- Sleep Hours Slider -->
+<div class="glass-card p-6 rounded-xl scroll-reveal" id="section-sleep">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">bedtime</span>
+<h3 class="font-headline-md text-headline-md">Sleep Hours</h3>
+</div>
+<span class="font-label-md text-label-md text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20" id="sleep-val">7.5h</span>
+</div>
+<input class="w-full" max="12" min="0" oninput="document.getElementById('sleep-val').innerText = this.value + 'h'" step="0.5" type="range" value="7.5"/>
+<div class="flex justify-between mt-2 text-on-surface-variant/40 font-label-sm text-label-sm">
+<span>0h</span>
+<span>6h</span>
+<span>12h</span>
+</div>
+</div>
+<!-- Mood Emotive Scale -->
+<div class="glass-card p-6 rounded-xl scroll-reveal" id="section-mood">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-secondary">psychology</span>
+<h3 class="font-headline-md text-headline-md">Mood</h3>
+</div>
+<div class="flex justify-between items-center gap-2">
+<label class="group cursor-pointer flex-1">
+<input class="hidden peer" name="mood" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 group-hover:bg-white/10">
+<span class="material-symbols-outlined text-3xl mb-1 opacity-50 group-hover:opacity-100 peer-checked:opacity-100" data-icon="sentiment_very_dissatisfied">sentiment_very_dissatisfied</span>
+<span class="font-label-sm text-[10px] uppercase opacity-40">Low</span>
+</div>
+</label>
+<label class="group cursor-pointer flex-1">
+<input class="hidden peer" name="mood" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 group-hover:bg-white/10">
+<span class="material-symbols-outlined text-3xl mb-1 opacity-50 group-hover:opacity-100 peer-checked:opacity-100" data-icon="sentiment_neutral">sentiment_neutral</span>
+<span class="font-label-sm text-[10px] uppercase opacity-40">Mid</span>
+</div>
+</label>
+<label class="group cursor-pointer flex-1">
+<input checked="" class="hidden peer" name="mood" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 group-hover:bg-white/10">
+<span class="material-symbols-outlined text-3xl mb-1 opacity-50 group-hover:opacity-100 peer-checked:opacity-100" data-icon="sentiment_satisfied">sentiment_satisfied</span>
+<span class="font-label-sm text-[10px] uppercase opacity-40">Good</span>
+</div>
+</label>
+<label class="group cursor-pointer flex-1">
+<input class="hidden peer" name="mood" type="radio"/>
+<div class="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 group-hover:bg-white/10">
+<span class="material-symbols-outlined text-3xl mb-1 opacity-50 group-hover:opacity-100 peer-checked:opacity-100" data-icon="sentiment_very_satisfied">sentiment_very_satisfied</span>
+<span class="font-label-sm text-[10px] uppercase opacity-40">High</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Energy Level Glow Slider -->
+<div class="glass-card p-6 rounded-xl scroll-reveal" id="section-energy">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">bolt</span>
+<h3 class="font-headline-md text-headline-md">Energy Level</h3>
+</div>
+<span class="font-label-md text-label-md text-tertiary-fixed-dim" id="energy-val">72%</span>
+</div>
+<div class="relative py-4">
+<div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full opacity-0 transition-opacity duration-500" id="energy-glow-track"></div>
+<input class="w-full relative z-10" max="100" min="0" oninput="document.getElementById('energy-val').innerText = this.value + '%'; document.getElementById('energy-glow-track').style.opacity = this.value/100;" type="range" value="72"/>
+</div>
+</div>
+<!-- Stress Level Segmented Picker -->
+<div class="glass-card p-6 rounded-xl scroll-reveal" id="section-stress">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-error">warning</span>
+<h3 class="font-headline-md text-headline-md">Stress Level</h3>
+</div>
+<div class="bg-surface-container-low p-1 rounded-full flex relative border border-white/5 overflow-hidden">
+<button class="stress-btn flex-1 py-3 text-label-md rounded-full transition-all z-10 hover:text-on-surface" data-level="low" type="button">Low</button>
+<button class="stress-btn flex-1 py-3 text-label-md rounded-full transition-all z-10 bg-primary/20 text-primary border border-primary/30" data-level="medium" type="button">Medium</button>
+<button class="stress-btn flex-1 py-3 text-label-md rounded-full transition-all z-10 hover:text-on-surface" data-level="high" type="button">High</button>
+</div>
+</div>
+<!-- Workout Intensity Chips -->
+<div class="glass-card p-6 rounded-xl scroll-reveal" id="section-workout">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim">fitness_center</span>
+<h3 class="font-headline-md text-headline-md">Workout Intensity</h3>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<label class="cursor-pointer">
+<input class="hidden peer" name="intensity" type="radio"/>
+<div class="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant/40 peer-checked:text-primary">block</span>
+<span class="font-label-md">None</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" name="intensity" type="radio"/>
+<div class="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant/40 peer-checked:text-primary">directions_walk</span>
+<span class="font-label-md">Light</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="hidden peer" name="intensity" type="radio"/>
+<div class="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant/40 peer-checked:text-primary">fitness_center</span>
+<span class="font-label-md">Medium</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="hidden peer" name="intensity" type="radio"/>
+<div class="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant/40 peer-checked:text-primary">local_fire_department</span>
+<span class="font-label-md">Intense</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Pulsing Action Button -->
+<div class="pt-8 pb-12">
+<button class="w-full bg-primary py-5 rounded-full font-headline-md text-on-primary font-bold animate-pulse-slow shadow-[0_0_30px_rgba(0,219,231,0.4)] active:scale-95 transition-transform" type="submit">
+                    Calculate Readiness Index
+                </button>
+<p class="text-center mt-4 text-on-surface-variant/50 text-label-sm uppercase tracking-widest">Processing Bio-Metric Data</p>
+</div>
+</form>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/40 backdrop-blur-2xl border-t border-white/5 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</a>
+<a class="flex items-center justify-center bg-primary/10 text-primary-fixed-dim rounded-full p-3 shadow-[inset_0_0_8px_rgba(0,219,231,0.4)] border border-primary/20 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</a>
+<a class="flex items-center justify-center text-on-surface-variant/60 p-3 hover:text-primary transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</a>
+</nav>
+<script>
+        // Intersection Observer for reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // Stress Button Logic
+        const stressBtns = document.querySelectorAll('.stress-btn');
+        stressBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                stressBtns.forEach(b => {
+                    b.classList.remove('bg-primary/20', 'text-primary', 'border', 'border-primary/30');
+                    b.classList.add('hover:text-on-surface');
+                });
+                btn.classList.add('bg-primary/20', 'text-primary', 'border', 'border-primary/30');
+                btn.classList.remove('hover:text-on-surface');
+            });
+        });
+
+        // Micro-interaction for form submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerText = "Syncing...";
+            btn.classList.remove('animate-pulse-slow');
+            btn.classList.add('opacity-50', 'pointer-events-none');
+            
+            setTimeout(() => {
+                alert("Neural Sync complete. Your Readiness Index is 84. Optimization plan updated.");
+                btn.innerText = "Calculate Readiness Index";
+                btn.classList.add('animate-pulse-slow');
+                btn.classList.remove('opacity-50', 'pointer-events-none');
+            }, 1500);
+        });
+    </script>
+</body></html>
