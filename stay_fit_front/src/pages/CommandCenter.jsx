@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useWellness } from '../context/WellnessContext';
-import { generateCommandBrief } from '../ai/engine';
+import { generateCommandBrief, calculateRecoveryConfidence } from '../ai/engine';
 import { generateCoachingText } from '../api/aiClient';
 import physicalCover from '../assets/physical_cover.png';
 import mentalCover from '../assets/mental_cover.png';
