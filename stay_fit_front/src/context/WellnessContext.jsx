@@ -5,7 +5,13 @@ import { processRecoveryData } from '../ai/recoveryFusionEngine';
 import { generateDailyWellnessReport } from '../services/dailyWellnessService';
 import { analyzeMood } from '../ai/moodAnalyzer';
 import { auth } from '../firebase/firebaseConfig';
-import { signInAnonymously } from 'firebase/auth';
+import { 
+  signInAnonymously, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth';
 import { saveDailyMetrics, getMetricHistory, getUserProfile, updateUserGamification } from '../firebase/firestoreService';
 
 const WellnessContext = createContext(null);
@@ -44,39 +50,32 @@ export const WellnessProvider = ({ children }) => {
 
   // Initialize Auth & DB state
   useEffect(() => {
-    let isMounted = true;
-    
-    const initializeAuth = async () => {
-      try {
-        const userCredential = await signInAnonymously(auth);
-        const currentUser = userCredential.user;
-        
-        if (isMounted) {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
           const profile = await getUserProfile(currentUser.uid);
           const history = await getMetricHistory(currentUser.uid);
-          
           setUser({ ...currentUser, profile });
           setGamification(profile?.gamification || { xp: 0, streak: 0, badges: [] });
           setMetricsHistory(history);
-          setLoading(false);
+        } catch (error) {
+          console.warn("Error fetching user data", error);
         }
-      } catch (error) {
-        if (isMounted) {
-          console.warn("Firebase Auth failed, falling back to local mock user.");
-          const mockUser = { uid: "local-mock-user-123" };
-          const profile = { hasCompletedOnboarding: false, gamification: { xp: 0, streak: 0, badges: [] } };
-          setUser({ ...mockUser, profile });
-          setGamification(profile.gamification);
-          setMetricsHistory([]);
-          setLoading(false);
-        }
+      } else {
+        setUser(null);
+        setGamification({ xp: 0, streak: 0, badges: [] });
+        setMetricsHistory([]);
       }
-    };
+      setLoading(false);
+    });
 
-    initializeAuth();
-
-    return () => { isMounted = false; };
+    return () => unsubscribe();
   }, []);
+
+  const login = (email, password) => signInWithEmailAndPassword(auth, email, password);
+  const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password);
+  const logout = () => signOut(auth);
+  const loginAsGuest = () => signInAnonymously(auth);
 
   // Update AI inference engines when metrics change
   useEffect(() => {
@@ -184,6 +183,10 @@ export const WellnessProvider = ({ children }) => {
     <WellnessContext.Provider value={{
       user,
       loading,
+      login,
+      signup,
+      logout,
+      loginAsGuest,
       metrics,
       readiness,
       sleepScore,

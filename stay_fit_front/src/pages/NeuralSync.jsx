@@ -2,68 +2,75 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useWellness } from '../context/WellnessContext';
 import { useNavigate } from 'react-router-dom';
+import { syncDailyState } from '../services/userPipeline';
 
 const NeuralSync = () => {
-  const { metrics, updateMultipleMetrics, addXP, unlockBadge } = useWellness();
+  const { user, metrics, updateMultipleMetrics, addXP, unlockBadge, recoveryScore, metricsHistory } = useWellness();
   const navigate = useNavigate();
   
   const [localMetrics, setLocalMetrics] = useState({
     sleepStartTime: metrics.sleepStartTime || '23:00',
     wakeUpTime: metrics.wakeUpTime || '07:00',
-    stress: metrics.stress,
-    energy: metrics.energy,
-    workoutIntensity: metrics.workoutIntensity,
-    mood: 'Good'
+    mood: metrics.mood || 'Neutral',
+    effort: metrics.effort || 3
   });
 
   const [isSyncing, setIsSyncing] = useState(false);
 
-  const handleSync = (e) => {
+  const handleSync = async (e) => {
     e.preventDefault();
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    
     setIsSyncing(true);
     
-    setTimeout(() => {
-      updateMultipleMetrics({
+    try {
+      const inputs = {
         sleepStartTime: localMetrics.sleepStartTime,
         wakeUpTime: localMetrics.wakeUpTime,
-        stress: localMetrics.stress,
-        energy: localMetrics.energy,
-        workoutIntensity: localMetrics.workoutIntensity
+        moodSelection: localMetrics.mood,
+        effortLevel: localMetrics.effort
+      };
+
+      const finalState = await syncDailyState(user.uid, inputs, metricsHistory, recoveryScore);
+      
+      updateMultipleMetrics({
+        ...finalState,
+        sleepStartTime: finalState.sleepStartTime,
+        wakeUpTime: finalState.wakeUpTime,
       });
       
       addXP(50);
-      
-      if (metrics.sleep > 80) unlockBadge('Recovery Master');
+      unlockBadge('Consistency');
 
+      setTimeout(() => {
+        setIsSyncing(false);
+        navigate('/');
+      }, 1000);
+    } catch (err) {
+      console.error("Failed to sync state", err);
       setIsSyncing(false);
-      navigate('/');
-    }, 1500);
+    }
   };
 
-  const getStressLevelFromValue = (val) => {
-    if (val < 33) return 'low';
-    if (val < 66) return 'medium';
-    return 'high';
+  const MOOD_OPTIONS = [
+    { id: 'Zen', emoji: '🧘' },
+    { id: 'Calm', emoji: '😌' },
+    { id: 'Neutral', emoji: '😐' },
+    { id: 'Tired', emoji: '🥱' },
+    { id: 'Stressed', emoji: '😫' },
+    { id: 'Overwhelmed', emoji: '🤯' }
+  ];
+
+  const EFFORT_LABELS = {
+    1: 'Light',
+    2: 'Moderate',
+    3: 'Hard',
+    4: 'Very Hard',
+    5: 'Extreme'
   };
-
-  const setStressLevel = (level) => {
-    if (level === 'low') setLocalMetrics(p => ({ ...p, stress: 15 }));
-    if (level === 'medium') setLocalMetrics(p => ({ ...p, stress: 50 }));
-    if (level === 'high') setLocalMetrics(p => ({ ...p, stress: 85 }));
-  };
-
-  const setWorkoutIntensity = (level) => {
-    if (level === 'none') setLocalMetrics(p => ({ ...p, workoutIntensity: 0 }));
-    if (level === 'light') setLocalMetrics(p => ({ ...p, workoutIntensity: 30 }));
-    if (level === 'medium') setLocalMetrics(p => ({ ...p, workoutIntensity: 60 }));
-    if (level === 'intense') setLocalMetrics(p => ({ ...p, workoutIntensity: 100 }));
-  };
-
-  const workoutLevel = localMetrics.workoutIntensity === 0 ? 'none' 
-    : localMetrics.workoutIntensity <= 30 ? 'light' 
-    : localMetrics.workoutIntensity <= 60 ? 'medium' : 'intense';
-
-  const stressLevel = getStressLevelFromValue(localMetrics.stress);
 
   return (
     <motion.div
@@ -72,13 +79,13 @@ const NeuralSync = () => {
       exit={{ opacity: 0, x: 20 }}
     >
       <section className="mb-lg">
-        <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2 font-bold neon-glow-text">Neural Sync</h2>
-        <p className="text-on-surface-variant text-body-md opacity-70">Sync your biological data with the OS to optimize your performance window.</p>
+        <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2 font-bold tracking-tighter">Neural Sync</h2>
+        <p className="text-on-surface-variant text-body-md opacity-70">Log your qualitative state. The AI handles the numbers.</p>
       </section>
 
-      <form className="space-y-gutter" onSubmit={handleSync}>
+      <form className="space-y-6" onSubmit={handleSync}>
         
-        {/* Auto Sleep Engine Inputs */}
+        {/* Sleep Timing */}
         <div className="glass-card p-6 rounded-xl">
           <div className="flex items-center gap-3 mb-6">
             <span className="material-symbols-outlined text-primary">bedtime</span>
@@ -106,20 +113,15 @@ const NeuralSync = () => {
           </div>
         </div>
 
-        {/* Mood Emotive Scale */}
+        {/* Emoji Mood Selector */}
         <div className="glass-card p-6 rounded-xl">
           <div className="flex items-center gap-3 mb-6">
             <span className="material-symbols-outlined text-secondary">psychology</span>
-            <h3 className="font-headline-md text-headline-md">Mood</h3>
+            <h3 className="font-headline-md text-headline-md">State of Mind</h3>
           </div>
-          <div className="flex justify-between items-center gap-2">
-            {[
-              { id: 'Low', icon: 'sentiment_very_dissatisfied' },
-              { id: 'Mid', icon: 'sentiment_neutral' },
-              { id: 'Good', icon: 'sentiment_satisfied' },
-              { id: 'High', icon: 'sentiment_very_satisfied' }
-            ].map(mood => (
-              <label key={mood.id} className="group cursor-pointer flex-1">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+            {MOOD_OPTIONS.map(mood => (
+              <label key={mood.id} className="cursor-pointer">
                 <input 
                   type="radio" 
                   name="mood" 
@@ -127,91 +129,38 @@ const NeuralSync = () => {
                   checked={localMetrics.mood === mood.id}
                   onChange={() => setLocalMetrics(p => ({...p, mood: mood.id}))}
                 />
-                <div className="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 group-hover:bg-white/10">
-                  <span className="material-symbols-outlined text-3xl mb-1 opacity-50 group-hover:opacity-100 peer-checked:opacity-100">{mood.icon}</span>
-                  <span className="font-label-sm text-[10px] uppercase opacity-40">{mood.id}</span>
+                <div className="flex flex-col items-center p-3 rounded-xl border border-white/5 bg-white/5 transition-all peer-checked:bg-primary/20 peer-checked:border-primary/50 hover:bg-white/10">
+                  <span className="text-3xl mb-1">{mood.emoji}</span>
+                  <span className="font-label-sm text-[10px] uppercase opacity-70">{mood.id}</span>
                 </div>
               </label>
             ))}
           </div>
         </div>
 
-        {/* Energy Level Glow Slider */}
+        {/* Perceived Effort Slider */}
         <div className="glass-card p-6 rounded-xl">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-tertiary-fixed-dim">bolt</span>
-              <h3 className="font-headline-md text-headline-md">Energy Level</h3>
+              <span className="material-symbols-outlined text-tertiary-fixed-dim">fitness_center</span>
+              <h3 className="font-headline-md text-headline-md">How hard did today feel?</h3>
             </div>
-            <span className="font-label-md text-label-md text-tertiary-fixed-dim">{localMetrics.energy}%</span>
+            <span className="font-label-md text-label-md text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-3 py-1 rounded-full uppercase">
+              {EFFORT_LABELS[localMetrics.effort]}
+            </span>
           </div>
-          <div className="relative py-4">
-            <div 
-              className="absolute inset-0 bg-primary/20 blur-2xl rounded-full transition-opacity duration-500" 
-              style={{ opacity: localMetrics.energy / 100 }}
-            ></div>
+          <div className="relative py-4 px-2">
             <input 
               type="range" 
-              min="0" max="100" 
-              className="w-full relative z-10"
-              value={localMetrics.energy}
-              onChange={(e) => setLocalMetrics(p => ({...p, energy: parseInt(e.target.value)}))}
+              min="1" max="5" step="1"
+              className="w-full relative z-10 accent-primary"
+              value={localMetrics.effort}
+              onChange={(e) => setLocalMetrics(p => ({...p, effort: parseInt(e.target.value)}))}
             />
-          </div>
-        </div>
-
-        {/* Stress Level Segmented Picker */}
-        <div className="glass-card p-6 rounded-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="material-symbols-outlined text-error">warning</span>
-            <h3 className="font-headline-md text-headline-md">Stress Level</h3>
-          </div>
-          <div className="bg-surface-container-low p-1 rounded-full flex relative border border-white/5 overflow-hidden">
-            <button 
-              type="button" 
-              className={`flex-1 py-3 text-label-md rounded-full transition-all z-10 ${stressLevel === 'low' ? 'bg-primary/20 text-primary border border-primary/30' : 'hover:text-on-surface'}`}
-              onClick={() => setStressLevel('low')}
-            >Low</button>
-            <button 
-              type="button" 
-              className={`flex-1 py-3 text-label-md rounded-full transition-all z-10 ${stressLevel === 'medium' ? 'bg-primary/20 text-primary border border-primary/30' : 'hover:text-on-surface'}`}
-              onClick={() => setStressLevel('medium')}
-            >Medium</button>
-            <button 
-              type="button" 
-              className={`flex-1 py-3 text-label-md rounded-full transition-all z-10 ${stressLevel === 'high' ? 'bg-primary/20 text-primary border border-primary/30' : 'hover:text-on-surface'}`}
-              onClick={() => setStressLevel('high')}
-            >High</button>
-          </div>
-        </div>
-
-        {/* Workout Intensity Chips */}
-        <div className="glass-card p-6 rounded-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="material-symbols-outlined text-primary-fixed-dim">fitness_center</span>
-            <h3 className="font-headline-md text-headline-md">Workout Intensity</h3>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { id: 'none', label: 'None', icon: 'block' },
-              { id: 'light', label: 'Light', icon: 'directions_walk' },
-              { id: 'medium', label: 'Medium', icon: 'fitness_center' },
-              { id: 'intense', label: 'Intense', icon: 'local_fire_department' },
-            ].map(w => (
-              <label key={w.id} className="cursor-pointer">
-                <input 
-                  type="radio" 
-                  name="intensity" 
-                  className="hidden peer"
-                  checked={workoutLevel === w.id}
-                  onChange={() => setWorkoutIntensity(w.id)}
-                />
-                <div className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5 peer-checked:bg-primary/20 peer-checked:border-primary/50 transition-all">
-                  <span className="material-symbols-outlined text-on-surface-variant/40 peer-checked:text-primary">{w.icon}</span>
-                  <span className="font-label-md">{w.label}</span>
-                </div>
-              </label>
-            ))}
+            <div className="flex justify-between text-[10px] text-on-surface-variant uppercase tracking-widest mt-2 px-1 opacity-50">
+              <span>Light</span>
+              <span>Extreme</span>
+            </div>
           </div>
         </div>
 
@@ -220,11 +169,10 @@ const NeuralSync = () => {
           <button 
             type="submit" 
             disabled={isSyncing}
-            className={`w-full bg-primary py-5 rounded-full font-headline-md text-on-primary font-bold shadow-[0_0_30px_rgba(0,219,231,0.4)] active:scale-95 transition-all ${isSyncing ? 'opacity-50' : 'animate-pulse-slow'}`}
+            className={`w-full bg-primary py-5 rounded-full font-headline-md text-on-primary font-bold shadow-[0_0_30px_rgba(255,106,0,0.4)] active:scale-95 transition-all ${isSyncing ? 'opacity-50' : 'animate-pulse-slow'}`}
           >
-            {isSyncing ? 'Syncing...' : 'Calculate Readiness Index'}
+            {isSyncing ? 'Synchronizing State...' : 'Sync Biological Data'}
           </button>
-          <p className="text-center mt-4 text-on-surface-variant/50 text-label-sm uppercase tracking-widest">Processing Bio-Metric Data</p>
         </div>
       </form>
     </motion.div>

@@ -1,14 +1,19 @@
 import { db } from './firebaseConfig';
-import { doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs, arrayUnion } from 'firebase/firestore';
 
 export const saveDailyMetrics = async (userId, data) => {
   if (!userId) return;
   try {
     const dateString = new Date().toISOString().split('T')[0];
-    const docRef = doc(db, `users/${userId}/dailyMetrics`, dateString);
-    await setDoc(docRef, data, { merge: true });
+    const docRef = doc(db, `users/${userId}/daily_logs`, dateString);
+    await setDoc(docRef, {
+      logs: arrayUnion({
+        ...data,
+        timestamp: new Date().toISOString()
+      })
+    }, { merge: true });
   } catch (error) {
-    console.error("Error writing daily metrics:", error);
+    console.error("Error appending daily log:", error);
   }
 };
 
@@ -16,14 +21,20 @@ export const getMetricHistory = async (userId, limitDays = 7) => {
   if (!userId) return [];
   try {
     const q = query(
-      collection(db, `users/${userId}/dailyMetrics`),
+      collection(db, `users/${userId}/daily_logs`),
       orderBy('__name__', 'desc'), // order by document ID (which is date string YYYY-MM-DD)
       limit(limitDays)
     );
     const querySnapshot = await getDocs(q);
     const history = [];
     querySnapshot.forEach((doc) => {
-      history.push(doc.data());
+      const dayData = doc.data();
+      // Average out the logs for the day or just take the latest one
+      if (dayData.logs && dayData.logs.length > 0) {
+        // Take the most recent log of the day as the canonical daily state
+        const latestLog = dayData.logs[dayData.logs.length - 1];
+        history.push({ date: doc.id, ...latestLog });
+      }
     });
     return history.reverse(); // Return in chronological order
   } catch (error) {
