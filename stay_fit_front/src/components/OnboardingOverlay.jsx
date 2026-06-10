@@ -45,17 +45,17 @@ const OnboardingOverlay = () => {
                     <span className="material-symbols-outlined text-3xl text-primary">psychology</span>
                   </div>
                   <h2 className="font-headline-lg text-headline-lg text-primary">Stay FIT</h2>
-                  <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Predictive Wellness OS</p>
+                  <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Your Personal Wellness AI</p>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="font-label-md text-label-md text-on-surface-variant mb-2 block">Operative ID (Name)</label>
+                    <label className="font-label-md text-label-md text-on-surface-variant mb-2 block">What should we call you?</label>
                     <input 
                       type="text" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Enter your name..."
+                      placeholder="Enter your first name..."
                       className="w-full bg-surface-container-high/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary/50 transition-colors"
                     />
                   </div>
@@ -64,7 +64,7 @@ const OnboardingOverlay = () => {
                     onClick={() => setStep(2)}
                     className="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md font-bold mt-4 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
                   >
-                    Initialize Sync
+                    Next Step
                   </button>
                 </div>
               </motion.div>
@@ -78,15 +78,15 @@ const OnboardingOverlay = () => {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <h3 className="font-headline-md text-headline-md text-primary">Select Primary Directive</h3>
-                  <p className="font-body-md text-body-md text-on-surface-variant">The AI will optimize your recovery protocol based on this goal.</p>
+                  <h3 className="font-headline-md text-headline-md text-primary">What is your main goal?</h3>
+                  <p className="font-body-md text-body-md text-on-surface-variant">We will personalize your insights based on what you want to achieve.</p>
                 </div>
 
                 <div className="space-y-3">
                   {[
-                    { id: 'hypertrophy', label: 'Hypertrophy & Strength', icon: 'fitness_center' },
-                    { id: 'endurance', label: 'Endurance & Cardio', icon: 'directions_run' },
-                    { id: 'recovery', label: 'Restoration & Longevity', icon: 'spa' }
+                    { id: 'hypertrophy', label: 'Build Muscle & Strength', icon: 'fitness_center' },
+                    { id: 'endurance', label: 'Improve Cardio & Endurance', icon: 'directions_run' },
+                    { id: 'recovery', label: 'Focus on Recovery & Wellness', icon: 'spa' }
                   ].map(g => (
                     <button
                       key={g.id}
@@ -103,7 +103,7 @@ const OnboardingOverlay = () => {
                   onClick={handleComplete}
                   className="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
                 >
-                  Engage Systems
+                  Start Tracking
                 </button>
               </motion.div>
             )}
