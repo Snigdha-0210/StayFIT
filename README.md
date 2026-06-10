@@ -5,6 +5,7 @@ An intelligent, data-driven wellness and recovery application that predicts your
 ![StayFIT UI](https://via.placeholder.com/1200x600?text=StayFIT+Predictive+Wellness+OS)
 
 ### 🎥 [Watch the StayFIT Demo Video Here!](https://drive.google.com/file/d/1zNG4hNtANxavU48cag9ndjWZLL-hfee6/view?usp=sharing)
+### 📊 [View the Presentation Deck Here!](https://drive.google.com/file/d/1TUkMtQ-pWm3HsadLQm1zZ9KUa8Wmy0ac/view?usp=sharing)
 
 ## ✨ Features
 
