@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useWellness } from '../context/WellnessContext';
-import { generateCommandBrief, calculateRecoveryConfidence } from '../ai/engine';
+import { generateCommandBrief } from '../ai/engine';
+import { generateCoachingText } from '../api/aiClient';
+import physicalCover from '../assets/physical_cover.png';
+import mentalCover from '../assets/mental_cover.png';
 
 const CommandCenter = () => {
   const { metrics, readiness, sleepScore, recoveryScore, burnoutRisk, metricsHistory } = useWellness();
   const [dashOffset, setDashOffset] = useState(283);
   const [commandBrief, setCommandBrief] = useState("Analyzing biometrics...");
+  const [routines, setRoutines] = useState({
+    physical: "Synchronizing...",
+    mental: "Synchronizing..."
+  });
 
   useEffect(() => {
     // Delay animation slightly for effect
@@ -18,9 +25,43 @@ const CommandCenter = () => {
 
   useEffect(() => {
     let isMounted = true;
-    generateCommandBrief(metrics, readiness, metricsHistory).then(brief => {
+    const fetchBrief = async () => {
+      // simulate artificial delay for engine to "process"
+      const brief = await generateCommandBrief(metrics, readiness, metricsHistory);
       if (isMounted) setCommandBrief(brief);
-    });
+
+      try {
+        const payload = {
+          mood: "Good",
+          sleep: sleepScore,
+          energy: metrics.energy,
+          stress: metrics.stress,
+          workout: metrics.workoutIntensity,
+          burnoutScore: burnoutRisk?.label || "Low",
+          recoveryScore: recoveryScore
+        };
+        const rawText = await generateCoachingText(payload);
+        
+        let physicalMatch = rawText.match(/PHYSICAL:\s*(.*?)(?=\nMENTAL:|\nMOTIVATION:|$)/is);
+        let mentalMatch = rawText.match(/MENTAL:\s*(.*?)(?=\nMOTIVATION:|\nPHYSICAL:|$)/is);
+        
+        if (isMounted) {
+          setRoutines({
+            physical: physicalMatch ? physicalMatch[1].trim() : "15m Active Recovery Flow",
+            mental: mentalMatch ? mentalMatch[1].trim() : "10m Guided NSDR Protocol"
+          });
+        }
+      } catch (err) {
+        console.error("Failed to generate routines", err);
+        if (isMounted) {
+          setRoutines({
+            physical: "15m Active Recovery Flow",
+            mental: "10m Guided NSDR Protocol"
+          });
+        }
+      }
+    };
+    fetchBrief();
     return () => { isMounted = false; };
   }, [metrics, readiness, metricsHistory]);
 
@@ -154,14 +195,14 @@ const CommandCenter = () => {
           {/* Physical Recommendation */}
           <div className="glass-card p-md rounded-xl flex items-center gap-md group cursor-pointer">
             <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-white/5">
-              <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Athlete performing active stretching." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDjeZUcNlYxrTaf-OavbDPscA0Tmq-FXfvVLE_33j8OmDvL6JJlU4S-5MbpBcZaGeYjTPv7SFLXrdUdDFIRQ2sy8wKIzy_x5rZqRHV_n9itfKahh9aie9xbC2a6v_yUJBuhvsW-VSqWpDEWvQym-t_nsWGCVVmh0L32WTs5PtmNFy9aELwHh0367zCpWpUKMhtylr4icZEjVgBMCoAqgb6ti5MNG1beQHtOjQxrrHaB1EPSr_k1N9PtOPg_y3AQcYLgpAbOhkuqSq" />
+              <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Physical Routine" src={physicalCover} />
             </div>
             <div className="flex-1">
-              <span className="font-label-sm text-label-sm text-primary-fixed-dim uppercase">Physical</span>
-              <h4 className="font-headline-md text-headline-md text-on-surface">15m Active Stretching</h4>
-              <div className="flex items-center gap-sm mt-xs">
+              <span className="font-label-sm text-label-sm text-primary-fixed-dim uppercase">Physical Protocol</span>
+              <h4 className="font-headline-sm text-headline-sm text-on-surface line-clamp-2 leading-tight mt-1">{routines.physical}</h4>
+              <div className="flex items-center gap-sm mt-2">
                 <span className="text-xs text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">schedule</span> Low Intensity
+                  <span className="material-symbols-outlined text-[14px]">auto_awesome</span> AI Generated
                 </span>
               </div>
             </div>
@@ -171,14 +212,14 @@ const CommandCenter = () => {
           {/* Mental Recommendation */}
           <div className="glass-card p-md rounded-xl flex items-center gap-md group cursor-pointer">
             <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-white/5">
-              <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Zen garden visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg-pKUqQUCffUZxeJ1e7k4PD9_yJZiA6XFKPnJirmxr6a5QOlbR26vD8_iAXYe0fQVtezNVmjBg0O_8inXidZCv0O3qaGHMSkqPyVfnUb5q-5zUlv0Z__AZ9WrkTDvu52IkSeLajyt4Al1QBsnmiU9J4DhtVN68rPz9Aj5X-TReaCrnXPBN5Yc30E08kBPrh6DxBmEd0jS-8TKK0_vC-B8irOjS3y4h5Pl98r5AOtjstUcqdpu5d-DZGEpHYIkE5erM7LtEWv8OYZB" />
+              <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Mental Routine" src={mentalCover} />
             </div>
             <div className="flex-1">
-              <span className="font-label-sm text-label-sm text-secondary uppercase">Mental</span>
-              <h4 className="font-headline-md text-headline-md text-on-surface">5m Guided Breathwork</h4>
-              <div className="flex items-center gap-sm mt-xs">
+              <span className="font-label-sm text-label-sm text-secondary uppercase">Mental Protocol</span>
+              <h4 className="font-headline-sm text-headline-sm text-on-surface line-clamp-2 leading-tight mt-1">{routines.mental}</h4>
+              <div className="flex items-center gap-sm mt-2">
                 <span className="text-xs text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">air</span> Parasympathetic Focus
+                  <span className="material-symbols-outlined text-[14px]">auto_awesome</span> AI Generated
                 </span>
               </div>
             </div>
