@@ -14,7 +14,7 @@ const OnboardingOverlay = () => {
 
   const handleComplete = () => {
     completeOnboarding({ name, goal });
-    navigate('/');
+    navigate('/sync');
   };
 
   return (
