@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { WellnessProvider } from './context/WellnessContext';
 import Layout from './components/Layout';
 import CommandCenter from './pages/CommandCenter';
@@ -24,6 +24,7 @@ function App() {
             <Route path="analytics" element={<Analytics />} />
             <Route path="coach" element={<AICoach />} />
           </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </WellnessProvider>

@@ -4,7 +4,7 @@ import { useWellness } from '../context/WellnessContext';
 import { generateForecast } from '../ai/engine';
 
 const Forecast = () => {
-  const { metrics, readiness, metricsHistory } = useWellness();
+  const { metrics, readiness, metricsHistory, addXP, unlockBadge } = useWellness();
   const [protocolApplied, setProtocolApplied] = useState(false);
   const [forecast, setForecast] = useState({
     currentTrajectory: { day1: Math.max(0, readiness - 5), day3: Math.max(0, readiness - 10), day7: Math.max(0, readiness - 15) },
@@ -155,21 +155,23 @@ const Forecast = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-4">
             <h4 className="font-headline-md text-headline-md text-tertiary">Recommended Protocol</h4>
-            <p className="text-on-surface font-body-md">Initiate 20m restorative breathwork and prioritize 8.5h sleep tonight. Skip high-intensity volume tomorrow morning.</p>
+            <p className="text-on-surface font-body-md">{forecast.recommendedProtocol || "Analyzing optimum protocol..."}</p>
             <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-xl border border-white/5">
-                <span className="material-symbols-outlined text-tertiary-fixed">bedtime</span>
-                <span className="font-label-sm text-label-sm">+1.5h Sleep</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-xl border border-white/5">
-                <span className="material-symbols-outlined text-primary-fixed-dim">water_drop</span>
-                <span className="font-label-sm text-label-sm">High Hydration</span>
-              </div>
+              {forecast.tags && forecast.tags.map((tag, idx) => (
+                <div key={idx} className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-xl border border-white/5">
+                  <span className="material-symbols-outlined text-primary-fixed-dim">{tag.icon}</span>
+                  <span className="font-label-sm text-label-sm">{tag.text}</span>
+                </div>
+              ))}
             </div>
           </div>
           <button 
             className={`px-8 py-4 rounded-2xl font-headline-md font-bold transition-all shadow-lg whitespace-nowrap ${protocolApplied ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed-variant' : 'bg-primary text-on-primary hover:scale-105 active:scale-95'}`}
-            onClick={() => setProtocolApplied(true)}
+            onClick={() => {
+              setProtocolApplied(true);
+              addXP(150);
+              unlockBadge('Protocol Active');
+            }}
             disabled={protocolApplied}
           >
             {protocolApplied ? 'Protocol Active' : 'Apply Protocol'}
