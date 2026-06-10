@@ -18,13 +18,9 @@ app.post('/api/chat', async (req, res) => {
     return res.status(500).json({ error: "API Key Error. Check backend .env" });
   }
 
-  const systemPrompt = `You are Stay FIT AI Coach, a wellness and recovery intelligence system.
+  const briefSystemPrompt = `You are Stay FIT AI Coach, a wellness and recovery intelligence system.
 
-You analyze user fitness and mental recovery data.
-
-You DO NOT give medical advice.
-
-You respond in short, structured coaching format.
+You analyze user fitness and mental recovery data. You DO NOT give medical advice. You respond in short, structured coaching format.
 
 INPUT DATA:
 - Mood: ${mood}
@@ -32,8 +28,7 @@ INPUT DATA:
 - Energy: ${energy}%
 - Stress: ${stress}%
 - Workout Intensity: ${workout}%
-- Burnout Risk Score: ${burnoutScore}%
-- Recovery Score: ${recoveryScore}%
+- Readiness Score: ${recoveryScore}%
 
 TASK:
 1. Interpret the user's current state in 1 line.
@@ -41,16 +36,9 @@ TASK:
 3. Give 1 mental recommendation.
 4. Give 1 motivation line.
 
-STYLE:
-- concise
-- friendly
-- coach-like
-- no emojis spam
-- no long paragraphs
-- must feel like a professional AI wellness system
+STYLE: concise, coach-like, no emojis spam.
 
 OUTPUT FORMAT:
-
 STATE:
 ...
 PHYSICAL:
@@ -59,6 +47,21 @@ MENTAL:
 ...
 MOTIVATION:
 ...`;
+
+  const coachSystemPrompt = `You are the Stay FIT AI Coach. You are chatting directly with the user via a messaging interface.
+You are extremely conversational, empathetic, and professional. 
+
+USER METRICS:
+- Mood: ${mood}
+- Sleep: ${sleep}%
+- Energy: ${energy}%
+- Stress: ${stress}%
+- Readiness Score: ${recoveryScore}%
+
+TASK:
+Answer the user's message directly. Keep it under 3 sentences. Be friendly and conversational. Do NOT use the STATE/PHYSICAL/MENTAL format. Just talk to them naturally, taking their metrics into account.`;
+
+  const systemPrompt = req.body.mode === 'coach' ? coachSystemPrompt : briefSystemPrompt;
 
   const messages = [
     { role: "system", content: systemPrompt }
@@ -109,39 +112,64 @@ MOTIVATION:
 
   const fetch = (await import('node-fetch')).default;
 
-  for (const api of apis) {
-    try {
-      console.log(`[Backend] Attempting ${api.name}...`);
-      const response = await fetch(api.endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${api.key}`
-        },
-        body: JSON.stringify({
-          model: api.model,
-          messages: messages,
-          temperature: 0.7,
-          max_tokens: 300
-        })
-      });
+  // ROUTING LOGIC:
+  // If mode === 'coach', prioritize GROQ for lightning-fast conversational chat.
+  // If mode === 'brief', prioritize GEMINI for deep structured analysis.
+  
+  if (req.body.mode === 'coach') {
+    for (const api of apis) {
+      try {
+        console.log(`[Backend] Attempting ${api.name} for COACH mode...`);
+        const response = await fetch(api.endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${api.key}`
+          },
+          body: JSON.stringify({
+            model: api.model,
+            messages: messages,
+            temperature: 0.7,
+            max_tokens: 300
+          })
+        });
 
-      if (!response.ok) {
-        throw new Error(`${api.name} API error: ${response.status}`);
+        if (!response.ok) throw new Error(`${api.name} API error: ${response.status}`);
+        const json = await response.json();
+        return res.json({ text: json.choices[0].message.content.trim() });
+      } catch (error) {
+        console.warn(`[Backend] ${api.name} failed:`, error.message);
       }
-
-      const json = await response.json();
-      return res.json({ text: json.choices[0].message.content.trim() });
-    } catch (error) {
-      console.warn(`[Backend] ${api.name} failed:`, error.message);
     }
-  }
-
-  try {
-    const geminiText = await tryGemini();
-    return res.json({ text: geminiText });
-  } catch (err) {
-    console.error("[Backend] Gemini failed:", err.message);
+    // Fallback to Gemini if Groq fails
+    try {
+      const geminiText = await tryGemini();
+      return res.json({ text: geminiText });
+    } catch (err) {
+      console.error("[Backend] Gemini fallback failed:", err.message);
+    }
+  } else {
+    // Mode is 'brief' -> Prioritize Gemini
+    try {
+      const geminiText = await tryGemini();
+      return res.json({ text: geminiText });
+    } catch (err) {
+      console.error("[Backend] Gemini failed for BRIEF mode:", err.message);
+      // Fallback to Groq/OpenAI if Gemini fails
+      for (const api of apis) {
+        try {
+          console.log(`[Backend] Attempting ${api.name} fallback...`);
+          const response = await fetch(api.endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${api.key}` },
+            body: JSON.stringify({ model: api.model, messages: messages, temperature: 0.7, max_tokens: 300 })
+          });
+          if (!response.ok) throw new Error(`${api.name} error`);
+          const json = await response.json();
+          return res.json({ text: json.choices[0].message.content.trim() });
+        } catch (e) {}
+      }
+    }
   }
 
   console.error("[Backend] ALL API ENDPOINTS FAILED.");

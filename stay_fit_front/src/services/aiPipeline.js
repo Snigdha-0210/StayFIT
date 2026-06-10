@@ -31,7 +31,8 @@ export const runIntelligencePipeline = async (currentMetrics, history = [], user
     workout: currentMetrics.workoutIntensity,
     burnoutScore: burnoutRiskScore,
     recoveryScore: recoveryScore,
-    userPrompt: userPrompt
+    userPrompt: userPrompt,
+    mode: userPrompt ? 'coach' : 'brief'
   };
 
   // 3. Send engine output + user metrics to aiClient.js
