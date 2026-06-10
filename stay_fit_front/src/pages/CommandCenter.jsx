@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useWellness } from '../context/WellnessContext';
 import { generateCommandBrief, calculateRecoveryConfidence } from '../ai/engine';
@@ -7,6 +8,7 @@ import physicalCover from '../assets/physical_cover.png';
 import mentalCover from '../assets/mental_cover.png';
 
 const CommandCenter = () => {
+  const navigate = useNavigate();
   const { metrics, readiness, sleepScore, recoveryScore, burnoutRisk, metricsHistory } = useWellness();
   const [dashOffset, setDashOffset] = useState(283);
   const [commandBrief, setCommandBrief] = useState("Analyzing biometrics...");
@@ -206,7 +208,12 @@ const CommandCenter = () => {
                 </span>
               </div>
             </div>
-            <button className="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed-dim transition-colors">play_circle</button>
+            <button 
+              onClick={() => navigate('/coach', { state: { prefill: `Guide me through the Physical Protocol: ${routines.physical}` } })}
+              className="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed-dim transition-colors"
+            >
+              play_circle
+            </button>
           </div>
           
           {/* Mental Recommendation */}
@@ -223,7 +230,12 @@ const CommandCenter = () => {
                 </span>
               </div>
             </div>
-            <button className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors">play_circle</button>
+            <button 
+              onClick={() => navigate('/coach', { state: { prefill: `Guide me through the Mental Protocol: ${routines.mental}` } })}
+              className="material-symbols-outlined text-on-surface-variant group-hover:text-secondary transition-colors"
+            >
+              play_circle
+            </button>
           </div>
         </div>
       </section>

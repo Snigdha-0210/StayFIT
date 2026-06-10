@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useWellness } from '../context/WellnessContext';
 import { runIntelligencePipeline } from '../services/aiPipeline';
 
 const AICoach = () => {
+  const location = useLocation();
   const { metrics, readiness, metricsHistory } = useWellness();
   const [messages, setMessages] = useState([
     {
@@ -16,7 +18,7 @@ const AICoach = () => {
       }
     }
   ]);
-  const [inputVal, setInputVal] = useState('');
+  const [inputVal, setInputVal] = useState(location.state?.prefill || '');
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef(null);
