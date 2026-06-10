@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { useWellness } from '../context/WellnessContext';
@@ -40,7 +40,8 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 const Analytics = () => {
-  const { gamification } = useWellness();
+  const { gamification, addXP, unlockBadge } = useWellness();
+  const [protocolApplied, setProtocolApplied] = useState(false);
 
   // Generate Cortisol Map cells
   const cortisolCells = Array.from({ length: 28 }).map((_, i) => {
@@ -230,8 +231,27 @@ const Analytics = () => {
               <p className="font-body-md text-body-md text-on-surface-variant max-w-md">Your cardiovascular recovery is peaking earlier in the circadian cycle. Suggest shifting high-intensity training to 08:30 AM.</p>
             </div>
           </div>
-          <button className="bg-primary text-on-primary px-lg py-sm rounded-full font-label-md text-label-md hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">
-            Apply Protocol
+          <button 
+            onClick={() => {
+              if (!protocolApplied) {
+                setProtocolApplied(true);
+                addXP(50);
+                unlockBadge('Protocol Adherent');
+              }
+            }}
+            disabled={protocolApplied}
+            className={`px-lg py-sm rounded-full font-label-md text-label-md transition-all shadow-lg ${
+              protocolApplied 
+                ? 'bg-primary-fixed-dim/20 text-primary-fixed-dim cursor-default shadow-none border border-primary-fixed-dim/30' 
+                : 'bg-primary text-on-primary hover:scale-105 active:scale-95 shadow-primary/20'
+            }`}
+          >
+            {protocolApplied ? (
+              <span className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px]">check_circle</span> 
+                Applied
+              </span>
+            ) : "Apply Protocol"}
           </button>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
