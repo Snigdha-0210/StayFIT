@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { calculateReadinessIndex } from '../ai/engine';
+import { processSleepData } from '../ai/sleepEngine';
+import { processRecoveryData } from '../ai/recoveryFusionEngine';
+import { generateDailyWellnessReport } from '../services/dailyWellnessService';
 import { analyzeMood } from '../ai/moodAnalyzer';
 import { auth } from '../firebase/firebaseConfig';
 import { signInAnonymously } from 'firebase/auth';
@@ -14,13 +17,19 @@ export const WellnessProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const [metrics, setMetrics] = useState({
-    sleep: 92,
+    sleepStartTime: '23:00',
+    wakeUpTime: '07:00',
+    sleep: 92, // Legacy field for backwards compatibility
     stress: 20,
     energy: 72,
     workoutIntensity: 50,
   });
 
   const [readiness, setReadiness] = useState(85);
+  const [sleepScore, setSleepScore] = useState(92);
+  const [recoveryScore, setRecoveryScore] = useState(85);
+  const [burnoutRisk, setBurnoutRisk] = useState({ label: 'Low', color: 'text-tertiary-fixed-dim' });
+  const [dailyReport, setDailyReport] = useState({});
 
   const [gamification, setGamification] = useState({
     xp: 0,
@@ -69,38 +78,60 @@ export const WellnessProvider = ({ children }) => {
     return () => { isMounted = false; };
   }, []);
 
-  // Update readiness using the AI engine
+  // Update AI inference engines when metrics change
   useEffect(() => {
     if (loading) return;
     let isMounted = true;
     
-    calculateReadinessIndex(metrics).then(newReadiness => {
-      if (isMounted) {
-        setReadiness(newReadiness);
-        
-        // Debounce Firestore writes (2 seconds)
-        if (saveTimeoutRef.current) {
-          clearTimeout(saveTimeoutRef.current);
-        }
-        saveTimeoutRef.current = setTimeout(() => {
-          if (user?.uid) {
-            saveDailyMetrics(user.uid, metrics);
-          }
-        }, 2000);
+    // 1. Run Auto Sleep Engine
+    const sleepData = processSleepData(metrics.sleepStartTime, metrics.wakeUpTime, metrics.stress);
+    
+    // 2. Run Recovery Fusion Engine
+    const fusionData = processRecoveryData(sleepData.sleepQualityScore, metrics.stress, metrics.energy, metrics.workoutIntensity);
+    
+    // 3. Run Daily Report Generator
+    const report = generateDailyWellnessReport(metricsHistory);
 
-        // Evaluate gamification rules based on new metrics & readiness
-        evaluateGamification(metrics, newReadiness);
+    if (isMounted) {
+      setSleepScore(sleepData.sleepQualityScore);
+      setRecoveryScore(fusionData.recoveryScore);
+      setReadiness(fusionData.readinessScore);
+      setBurnoutRisk(fusionData.burnoutRisk);
+      setDailyReport(report);
+      
+      const updatedMetrics = { ...metrics, sleep: sleepData.sleepQualityScore };
+
+      // Debounce Firestore writes (2 seconds)
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
       }
-    });
+      saveTimeoutRef.current = setTimeout(() => {
+        if (user?.uid) {
+          saveDailyMetrics(user.uid, {
+            ...updatedMetrics,
+            sleepScore: sleepData.sleepQualityScore,
+            recoveryScore: fusionData.recoveryScore,
+            readinessScore: fusionData.readinessScore
+          });
+        }
+      }, 2000);
+
+      // Evaluate gamification rules based on new metrics & readiness
+      evaluateGamification(updatedMetrics, fusionData.readinessScore);
+    }
 
     return () => { 
       isMounted = false;
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     };
-  }, [metrics, loading, user]);
+  }, [metrics, loading, user, metricsHistory]);
 
   const updateMetric = (key, value) => {
     setMetrics(prev => ({ ...prev, [key]: value }));
+  };
+
+  const updateMultipleMetrics = (newMetrics) => {
+    setMetrics(prev => ({ ...prev, ...newMetrics }));
   };
 
   const addXP = (amount) => {
@@ -155,9 +186,14 @@ export const WellnessProvider = ({ children }) => {
       loading,
       metrics,
       readiness,
+      sleepScore,
+      recoveryScore,
+      burnoutRisk,
+      dailyReport,
       gamification,
       metricsHistory,
       updateMetric,
+      updateMultipleMetrics,
       addXP,
       unlockBadge,
       newBadge,

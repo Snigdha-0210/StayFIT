@@ -4,11 +4,12 @@ import { useWellness } from '../context/WellnessContext';
 import { useNavigate } from 'react-router-dom';
 
 const NeuralSync = () => {
-  const { metrics, updateMetric, addXP, unlockBadge } = useWellness();
+  const { metrics, updateMultipleMetrics, addXP, unlockBadge } = useWellness();
   const navigate = useNavigate();
   
   const [localMetrics, setLocalMetrics] = useState({
-    sleep: (metrics.sleep / 100) * 12, // convert 0-100 to 0-12
+    sleepStartTime: metrics.sleepStartTime || '23:00',
+    wakeUpTime: metrics.wakeUpTime || '07:00',
     stress: metrics.stress,
     energy: metrics.energy,
     workoutIntensity: metrics.workoutIntensity,
@@ -22,15 +23,17 @@ const NeuralSync = () => {
     setIsSyncing(true);
     
     setTimeout(() => {
-      // Convert sleep back to percentage
-      updateMetric('sleep', Math.round((localMetrics.sleep / 12) * 100));
-      updateMetric('stress', localMetrics.stress);
-      updateMetric('energy', localMetrics.energy);
-      updateMetric('workoutIntensity', localMetrics.workoutIntensity);
+      updateMultipleMetrics({
+        sleepStartTime: localMetrics.sleepStartTime,
+        wakeUpTime: localMetrics.wakeUpTime,
+        stress: localMetrics.stress,
+        energy: localMetrics.energy,
+        workoutIntensity: localMetrics.workoutIntensity
+      });
       
       addXP(50);
       
-      if (localMetrics.sleep >= 8) unlockBadge('Recovery Master');
+      if (metrics.sleep > 80) unlockBadge('Recovery Master');
 
       setIsSyncing(false);
       navigate('/');
@@ -75,26 +78,31 @@ const NeuralSync = () => {
 
       <form className="space-y-gutter" onSubmit={handleSync}>
         
-        {/* Sleep Hours Slider */}
+        {/* Auto Sleep Engine Inputs */}
         <div className="glass-card p-6 rounded-xl">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed-dim">bedtime</span>
-              <h3 className="font-headline-md text-headline-md">Sleep Hours</h3>
-            </div>
-            <span className="font-label-md text-label-md text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">{localMetrics.sleep.toFixed(1)}h</span>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary">bedtime</span>
+            <h3 className="font-headline-md text-headline-md">Sleep Timing</h3>
           </div>
-          <input 
-            type="range" 
-            min="0" max="12" step="0.5" 
-            className="w-full"
-            value={localMetrics.sleep}
-            onChange={(e) => setLocalMetrics(p => ({...p, sleep: parseFloat(e.target.value)}))}
-          />
-          <div className="flex justify-between mt-2 text-on-surface-variant/40 font-label-sm text-label-sm">
-            <span>0h</span>
-            <span>6h</span>
-            <span>12h</span>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-label-sm text-on-surface-variant mb-2 uppercase tracking-widest">To Bed</label>
+              <input 
+                type="time" 
+                className="w-full bg-surface-container-low border border-white/5 rounded-lg p-3 text-on-surface focus:outline-none focus:border-primary/50"
+                value={localMetrics.sleepStartTime}
+                onChange={(e) => setLocalMetrics(p => ({...p, sleepStartTime: e.target.value}))}
+              />
+            </div>
+            <div>
+              <label className="block text-label-sm text-on-surface-variant mb-2 uppercase tracking-widest">Woke Up</label>
+              <input 
+                type="time" 
+                className="w-full bg-surface-container-low border border-white/5 rounded-lg p-3 text-on-surface focus:outline-none focus:border-primary/50"
+                value={localMetrics.wakeUpTime}
+                onChange={(e) => setLocalMetrics(p => ({...p, wakeUpTime: e.target.value}))}
+              />
+            </div>
           </div>
         </div>
 

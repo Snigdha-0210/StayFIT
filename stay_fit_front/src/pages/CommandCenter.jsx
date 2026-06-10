@@ -4,7 +4,7 @@ import { useWellness } from '../context/WellnessContext';
 import { generateCommandBrief, calculateRecoveryConfidence } from '../ai/engine';
 
 const CommandCenter = () => {
-  const { metrics, readiness, metricsHistory } = useWellness();
+  const { metrics, readiness, sleepScore, recoveryScore, burnoutRisk, metricsHistory } = useWellness();
   const [dashOffset, setDashOffset] = useState(283);
   const [commandBrief, setCommandBrief] = useState("Analyzing biometrics...");
 
@@ -24,14 +24,7 @@ const CommandCenter = () => {
     return () => { isMounted = false; };
   }, [metrics, readiness, metricsHistory]);
 
-  // Determine burnout risk
-  const getBurnoutRisk = () => {
-    if (metrics.stress > 70 && metrics.sleep < 50) return { label: 'High', color: 'text-error' };
-    if (metrics.stress > 50 || metrics.sleep < 70) return { label: 'Medium', color: 'text-secondary' };
-    return { label: 'Low', color: 'text-tertiary-fixed-dim' };
-  };
 
-  const burnout = getBurnoutRisk();
 
   return (
     <motion.div
@@ -84,22 +77,22 @@ const CommandCenter = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-tertiary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="flex justify-between items-start relative z-10">
             <span className="material-symbols-outlined text-tertiary-fixed-dim">speed</span>
-            <div className={`w-2 h-2 rounded-full ${burnout.color === 'text-tertiary-fixed-dim' ? 'bg-tertiary-fixed-dim' : burnout.color === 'text-error' ? 'bg-error' : 'bg-secondary'}`}></div>
+            <div className={`w-2 h-2 rounded-full ${burnoutRisk?.color === 'text-tertiary-fixed-dim' ? 'bg-tertiary-fixed-dim' : burnoutRisk?.color === 'text-error' ? 'bg-error' : 'bg-secondary'}`}></div>
           </div>
           <div className="relative z-10">
             <p className="font-label-sm text-label-sm text-on-surface-variant">Burnout Risk</p>
-            <p className={`font-headline-md text-headline-md ${burnout.color}`}>{burnout.label}</p>
+            <p className={`font-headline-md text-headline-md ${burnoutRisk?.color}`}>{burnoutRisk?.label}</p>
           </div>
         </div>
         
         <div className="glass-card p-md rounded-xl flex flex-col justify-between h-32">
-          <span className="material-symbols-outlined text-primary-fixed-dim">bolt</span>
+          <span className="material-symbols-outlined text-primary-fixed-dim">favorite</span>
           <div>
-            <p className="font-label-sm text-label-sm text-on-surface-variant">Energy Level</p>
+            <p className="font-label-sm text-label-sm text-on-surface-variant">Recovery Score</p>
             <div className="flex items-center gap-sm">
-              <span className="font-headline-md text-headline-md">{metrics.energy}%</span>
+              <span className="font-headline-md text-headline-md">{recoveryScore}%</span>
               <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
-                <div className="h-full bg-primary-fixed-dim rounded-full transition-all duration-700" style={{ width: `${metrics.energy}%` }}></div>
+                <div className="h-full bg-primary-fixed-dim rounded-full transition-all duration-700" style={{ width: `${recoveryScore}%` }}></div>
               </div>
             </div>
           </div>
@@ -129,7 +122,7 @@ const CommandCenter = () => {
           <span className="material-symbols-outlined text-secondary">bedtime</span>
           <div>
             <p className="font-label-sm text-label-sm text-on-surface-variant">Sleep Quality</p>
-            <p className="font-headline-md text-headline-md text-secondary">{metrics.sleep}%</p>
+            <p className="font-headline-md text-headline-md text-secondary">{sleepScore}%</p>
           </div>
         </div>
       </section>
