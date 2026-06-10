@@ -112,7 +112,7 @@ const AICoach = () => {
                 <div className="mt-4 p-3 bg-surface-container-low/50 rounded-xl border border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-8 bg-error-container rounded-full relative overflow-hidden">
-                      <div className="absolute bottom-0 w-full bg-error h-2/3 shadow-[0_0_8px_#ffb4ab]" style={{ height: `${msg.metrics.score}%`, backgroundColor: msg.metrics.score > 70 ? '#00dbe7' : '#ffb4ab' }}></div>
+                      <div className="absolute bottom-0 w-full bg-error h-2/3" style={{ height: `${msg.metrics.score}%`, backgroundColor: msg.metrics.score > 70 ? '#FF6A00' : '#EF4444' }}></div>
                     </div>
                     <div>
                       <p className="font-label-sm text-label-sm text-on-surface-variant">Recovery Score</p>

@@ -84,7 +84,7 @@ const CommandCenter = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-tertiary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="flex justify-between items-start relative z-10">
             <span className="material-symbols-outlined text-tertiary-fixed-dim">speed</span>
-            <div className={`w-2 h-2 rounded-full ${burnout.color === 'text-tertiary-fixed-dim' ? 'bg-tertiary-fixed-dim pulse-status' : burnout.color === 'text-error' ? 'bg-error' : 'bg-secondary'}`}></div>
+            <div className={`w-2 h-2 rounded-full ${burnout.color === 'text-tertiary-fixed-dim' ? 'bg-tertiary-fixed-dim' : burnout.color === 'text-error' ? 'bg-error' : 'bg-secondary'}`}></div>
           </div>
           <div className="relative z-10">
             <p className="font-label-sm text-label-sm text-on-surface-variant">Burnout Risk</p>
@@ -145,7 +145,7 @@ const CommandCenter = () => {
           </div>
           <div className="space-y-xs">
             <h3 className="font-headline-md text-headline-md text-primary-fixed-dim">Command Brief</h3>
-            <div className="typing-text">
+            <div>
               <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
                 {commandBrief}
               </p>

@@ -100,7 +100,7 @@ const Forecast = () => {
         </div>
 
         {/* Path 2: Optimized Path */}
-        <div className="glass-card rounded-2xl p-6 relative overflow-hidden group neon-glow-primary border-primary/20 bg-primary/5">
+        <div className="glass-card rounded-2xl p-6 relative overflow-hidden group border-primary/20 bg-primary/5">
           <div className="absolute top-0 right-0 p-4 opacity-20">
             <span className="material-symbols-outlined text-6xl text-primary">auto_awesome</span>
           </div>
@@ -130,7 +130,7 @@ const Forecast = () => {
                   initial={{ width: 0 }}
                   animate={{ width: `${optimizedTrajectory?.day7 || 0}%` }}
                   transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-                  className="h-full bg-primary-fixed-dim neon-glow-primary"
+                  className="h-full bg-primary-fixed-dim"
                 />
               </div>
             </div>
@@ -168,7 +168,7 @@ const Forecast = () => {
             </div>
           </div>
           <button 
-            className={`px-8 py-4 rounded-2xl font-headline-md font-bold transition-all shadow-lg whitespace-nowrap ${protocolApplied ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed-variant' : 'bg-primary text-on-primary hover:scale-105 active:scale-95 neon-glow-primary'}`}
+            className={`px-8 py-4 rounded-2xl font-headline-md font-bold transition-all shadow-lg whitespace-nowrap ${protocolApplied ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed-variant' : 'bg-primary text-on-primary hover:scale-105 active:scale-95'}`}
             onClick={() => setProtocolApplied(true)}
             disabled={protocolApplied}
           >

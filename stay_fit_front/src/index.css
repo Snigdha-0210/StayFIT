@@ -11,17 +11,14 @@
 
 @layer components {
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    background: #1A1A1D;
+    border: 1px solid #2A2A2E;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
   .glass-card:hover {
-    border-color: rgba(0, 219, 231, 0.3);
-    background: rgba(255, 255, 255, 0.05);
-  }
-  .neon-glow-primary {
-    box-shadow: 0 0 15px rgba(0, 219, 231, 0.3);
+    transform: translateY(-2px);
+    border-color: rgba(255, 106, 0, 0.5);
   }
   .recovery-ring {
     stroke-dasharray: 283;
@@ -29,22 +26,6 @@
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
   }
-
-  .pulse-status {
-    animation: pulse-green 2s infinite;
-  }
-
-  .typing-text {
-    overflow: hidden;
-    border-right: 2px solid #00dbe7;
-    white-space: normal;
-    margin: 0 auto;
-    animation: 
-        typing 3s steps(40, end),
-        blink-caret .75s step-end infinite;
-    max-width: fit-content;
-  }
-
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
@@ -67,23 +48,7 @@
   }
 }
 
-@keyframes pulse-green {
-  0% { box-shadow: 0 0 0 0 rgba(171, 214, 0, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(171, 214, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(171, 214, 0, 0); }
-}
-
-@keyframes typing {
-  from { max-height: 0; opacity: 0; }
-  to { max-height: 200px; opacity: 1; }
-}
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #00dbe7; }
-}
-
 body {
-  background: radial-gradient(circle at top right, #1d1e32, #111225);
-  background-attachment: fixed;
+  background: #0A0A0B;
   min-height: 100vh;
 }

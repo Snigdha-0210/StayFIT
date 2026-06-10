@@ -25,7 +25,7 @@ const OnboardingOverlay = () => {
         <motion.div
           initial={{ scale: 0.9, y: 20 }}
           animate={{ scale: 1, y: 0 }}
-          className="glass-card w-full max-w-md rounded-3xl p-8 border-t-2 border-t-primary/30 shadow-[0_0_50px_rgba(0,219,231,0.1)] relative overflow-hidden"
+          className="glass-card w-full max-w-md rounded-3xl p-8 border-t-2 border-t-primary/30 relative overflow-hidden"
         >
           {/* Background Glows */}
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-[60px]"></div>
@@ -42,7 +42,7 @@ const OnboardingOverlay = () => {
               >
                 <div className="text-center space-y-2 mb-8">
                   <div className="w-16 h-16 mx-auto rounded-full border border-primary/30 flex items-center justify-center mb-4 bg-surface-container-high">
-                    <span className="material-symbols-outlined text-3xl text-primary neon-glow-primary">psychology</span>
+                    <span className="material-symbols-outlined text-3xl text-primary">psychology</span>
                   </div>
                   <h2 className="font-headline-lg text-headline-lg text-primary">Stay FIT</h2>
                   <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Predictive Wellness OS</p>

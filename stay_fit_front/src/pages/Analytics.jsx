@@ -116,11 +116,10 @@ const Analytics = () => {
                   type="monotone" 
                   dataKey="val" 
                   name="Mood"
-                  stroke="#00dbe7" 
+                  stroke="#FF6A00" 
                   strokeWidth={3}
-                  dot={{ r: 4, fill: '#00dbe7', strokeWidth: 0 }}
+                  dot={{ r: 4, fill: '#FF6A00', strokeWidth: 0 }}
                   activeDot={{ r: 6, fill: '#fff' }}
-                  style={{ filter: 'drop-shadow(0 0 8px rgba(0, 219, 231, 0.6))' }}
                 />
               </LineChart>
             </ResponsiveContainer>

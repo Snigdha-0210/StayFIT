@@ -47,7 +47,7 @@ const Layout = () => {
             initial={{ opacity: 0, y: -50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.9 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 glass-card px-lg py-sm rounded-full flex items-center gap-sm border-secondary shadow-[0_0_20px_rgba(235,178,255,0.4)]"
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 glass-card px-lg py-sm rounded-full flex items-center gap-sm border-secondary"
           >
             <span className="material-symbols-outlined text-secondary text-2xl">workspace_premium</span>
             <div>
