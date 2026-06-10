@@ -4,6 +4,8 @@ An intelligent, data-driven wellness and recovery application that predicts your
 
 ![StayFIT UI](https://via.placeholder.com/1200x600?text=StayFIT+Predictive+Wellness+OS)
 
+### 🎥 [Watch the StayFIT Demo Video Here!](https://drive.google.com/file/d/1zNG4hNtANxavU48cag9ndjWZLL-hfee6/view?usp=sharing)
+
 ## ✨ Features
 
 - **Neural Sync:** Daily check-ins to capture sleep, energy, stress, and workout intensity.
