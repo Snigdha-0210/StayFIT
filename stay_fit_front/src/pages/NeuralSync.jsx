@@ -96,7 +96,7 @@ const NeuralSync = () => {
               <label className="block text-label-sm text-on-surface-variant mb-2 uppercase tracking-widest">To Bed</label>
               <input 
                 type="time" 
-                className="w-full bg-surface-container-low border border-white/5 rounded-lg p-3 text-on-surface focus:outline-none focus:border-primary/50"
+                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white [color-scheme:dark] focus:outline-none focus:border-primary/50"
                 value={localMetrics.sleepStartTime}
                 onChange={(e) => setLocalMetrics(p => ({...p, sleepStartTime: e.target.value}))}
               />
@@ -105,7 +105,7 @@ const NeuralSync = () => {
               <label className="block text-label-sm text-on-surface-variant mb-2 uppercase tracking-widest">Woke Up</label>
               <input 
                 type="time" 
-                className="w-full bg-surface-container-low border border-white/5 rounded-lg p-3 text-on-surface focus:outline-none focus:border-primary/50"
+                className="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white [color-scheme:dark] focus:outline-none focus:border-primary/50"
                 value={localMetrics.wakeUpTime}
                 onChange={(e) => setLocalMetrics(p => ({...p, wakeUpTime: e.target.value}))}
               />
