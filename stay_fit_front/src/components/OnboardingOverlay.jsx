@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useWellness } from '../context/WellnessContext';
 
 const OnboardingOverlay = () => {
   const { user, loading, completeOnboarding } = useWellness();
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [goal, setGoal] = useState('hypertrophy');
   const [name, setName] = useState('');
@@ -12,6 +14,7 @@ const OnboardingOverlay = () => {
 
   const handleComplete = () => {
     completeOnboarding({ name, goal });
+    navigate('/');
   };
 
   return (
