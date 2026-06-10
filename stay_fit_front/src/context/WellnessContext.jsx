@@ -4,14 +4,6 @@ import { processSleepData } from '../ai/sleepEngine';
 import { processRecoveryData } from '../ai/recoveryFusionEngine';
 import { generateDailyWellnessReport } from '../services/dailyWellnessService';
 import { analyzeMood } from '../ai/moodAnalyzer';
-import { auth } from '../firebase/firebaseConfig';
-import { 
-  signInAnonymously, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-} from 'firebase/auth';
 import { saveDailyMetrics, getMetricHistory, getUserProfile, updateUserGamification } from '../firebase/firestoreService';
 
 const WellnessContext = createContext(null);
@@ -48,34 +40,37 @@ export const WellnessProvider = ({ children }) => {
   const [metricsHistory, setMetricsHistory] = useState([]);
   const saveTimeoutRef = useRef(null);
 
-  // Initialize Auth & DB state
+  // Initialize Mock Auth & DB state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        try {
-          const profile = await getUserProfile(currentUser.uid);
-          const history = await getMetricHistory(currentUser.uid);
-          setUser({ ...currentUser, profile });
-          setGamification(profile?.gamification || { xp: 0, streak: 0, badges: [] });
-          setMetricsHistory(history);
-        } catch (error) {
-          console.warn("Error fetching user data", error);
-        }
-      } else {
-        setUser(null);
+    let localUid = localStorage.getItem('stayfit_uid');
+    if (!localUid) {
+      localUid = 'user_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('stayfit_uid', localUid);
+    }
+    
+    const initializeMockAuth = async () => {
+      try {
+        const profile = await getUserProfile(localUid);
+        const history = await getMetricHistory(localUid);
+        setUser({ uid: localUid, profile });
+        setGamification(profile?.gamification || { xp: 0, streak: 0, badges: [] });
+        setMetricsHistory(history);
+      } catch (error) {
+        console.warn("Firestore blocked access due to rules. Falling back to local state.", error);
+        setUser({ uid: localUid, profile: { gamification: { xp: 0, streak: 0, badges: [] } } });
         setGamification({ xp: 0, streak: 0, badges: [] });
-        setMetricsHistory([]);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    initializeMockAuth();
   }, []);
 
-  const login = (email, password) => signInWithEmailAndPassword(auth, email, password);
-  const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password);
-  const logout = () => signOut(auth);
-  const loginAsGuest = () => signInAnonymously(auth);
+  const login = async () => {};
+  const signup = async () => {};
+  const logout = async () => {};
+  const loginAsGuest = async () => {};
 
   // Update AI inference engines when metrics change
   useEffect(() => {
